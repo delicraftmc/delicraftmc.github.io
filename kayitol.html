@@ -2,7 +2,6 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeliCraft | Kayıt Ol</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>body { font-family: sans-serif; background: #09090b; color: white; }</style>
@@ -16,9 +15,35 @@
             <button type="submit" class="w-full bg-indigo-600 py-3 rounded-xl font-bold">Hesap Oluştur</button>
         </form>
     </main>
+
     <script type="module">
-        // FIREBASE CONFIG BURAYA GELECEK
-        const firebaseConfig = { /* KODLARINI BURAYA YAPIŞTIR */ };
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCkyxgXj4m7lX07UWcuq41f0VYGgaADDYU",
+            authDomain: "delicraft-3fc8e.firebaseapp.com",
+            projectId: "delicraft-3fc8e",
+            storageBucket: "delicraft-3fc8e.firebasestorage.app",
+            messagingSenderId: "93159206834",
+            appId: "1:93159206834:web:ad3dec0d73ae0f6b32feab"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        document.getElementById('kayitForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            try {
+                await createUserWithEmailAndPassword(auth, email, password);
+                alert("Kayıt başarılı!");
+                window.location.href = "index.html";
+            } catch (error) {
+                alert("Hata: " + error.message);
+            }
+        });
     </script>
 </body>
 </html>
