@@ -4,61 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeliCraft - Giriş Kapısı</title>
-    <link rel="icon" type="image/png" href="logo.png">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Montserrat', sans-serif; background: radial-gradient(circle at center, #1e1b4b 0%, #09090b 100%); min-height: 100vh; }
+        body { font-family: 'Montserrat', sans-serif; background: #09090b; }
+        .glow-blob { position: fixed; width: 400px; height: 400px; background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%); filter: blur(60px); z-index: -1; }
     </style>
 </head>
-<body class="text-gray-100 flex items-center justify-center p-4">
+<body class="text-gray-100 min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="glow-blob top-0 left-0"></div>
 
-    <!-- ANA KAPSAYICI -->
-    <div class="container mx-auto flex flex-col md:flex-row items-start justify-center gap-12 max-w-5xl">
+    <main class="w-full max-w-3xl space-y-10 py-10">
         
-        <!-- SOL PANEL: BİLGİ MENÜSÜ -->
-        <div class="w-full md:w-64 space-y-4 shrink-0">
-            <h3 class="text-indigo-400 font-bold uppercase tracking-widest text-xs mb-2">Bilgi Paneli</h3>
+        <div class="text-center space-y-4">
+            <h1 class="text-7xl md:text-9xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-indigo-400 via-purple-500 to-pink-500">DELICRAFT</h1>
+            <p class="text-purple-300/80 font-medium tracking-widest uppercase text-sm">Türkiye'nin En Eğlenceli Discord Entegreli Minecraft Sunucusu</p>
+        </div>
+
+        <div class="space-y-4" x-data="{ selected: null }">
             
-            <div class="bg-zinc-900/60 border border-zinc-800 rounded-xl overflow-hidden">
-                <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="w-full p-4 text-left font-bold text-sm flex justify-between hover:bg-zinc-800">Hakkımızda <span>▼</span></button>
-                <div class="hidden p-4 pt-0 text-xs text-zinc-400 leading-relaxed border-t border-zinc-800/50">2026 yılında atılan rastgele bir fikirle yürürlüğe giren DeliCraft, tamamen topluluk odaklı, güvenli ve eğlenceli bir Minecraft sunucusudur.</div>
+            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+                <button onclick="this.parentElement.querySelector('.content').classList.toggle('hidden')" class="w-full p-6 text-left font-bold flex justify-between items-center">
+                    Hakkımızda
+                    <span class="text-indigo-400">▼</span>
+                </button>
+                <div class="content hidden p-6 pt-0 text-zinc-400 text-sm leading-relaxed">
+                    DeliCraft, 2026 yılında üç yakın arkadaşın (Jahock, Efes, Malandina) bir akşam otururken "Neden kendi dünyamızı kurmuyoruz?" demesiyle ortaya çıkan bir projedir. Tamamen eğlence ve oyuncu odaklı, güvenli bir topluluk oluşturmayı hedefliyoruz.
+                </div>
             </div>
 
-            <div class="bg-zinc-900/60 border border-zinc-800 rounded-xl overflow-hidden">
-                <button onclick="this.nextElementSibling.classList.toggle('hidden')" class="w-full p-4 text-left font-bold text-sm flex justify-between hover:bg-zinc-800">Yönetim Takımı <span>▼</span></button>
-                <div class="hidden p-4 pt-0 text-xs text-zinc-400 leading-relaxed border-t border-zinc-800/50">
-                    • <b>Jahock:</b> Genel Sorumlu<br>
-                    • <b>Malandina:</b> Topluluk İlişkileri<br>
-                    • <b>Efes:</b> Oyun İçi Problemler
+            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+                <button onclick="this.parentElement.querySelector('.content').classList.toggle('hidden')" class="w-full p-6 text-left font-bold flex justify-between items-center">
+                    Kurucularımız
+                    <span class="text-indigo-400">▼</span>
+                </button>
+                <div class="content hidden p-6 pt-0 text-zinc-400 text-sm leading-relaxed">
+                    Sunucumuzun mimarları: <br>
+                    • <b>Jahock</b> - Vizyon ve Genel Koordinasyon <br>
+                    • <b>Efes</b> - Teknik ve Yönetim <br>
+                    • <b>Malandina</b> - Topluluk ve Moderasyon
+                </div>
+            </div>
+
+            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+                <button onclick="this.parentElement.querySelector('.content').classList.toggle('hidden')" class="w-full p-6 text-left font-bold flex justify-between items-center">
+                    Sunucu Hikayesi
+                    <span class="text-indigo-400">▼</span>
+                </button>
+                <div class="content hidden p-6 pt-0 text-zinc-400 text-sm leading-relaxed">
+                    2026'da atılan rastgele bir fikirle yürürlüğe giren bu proje, Minecraft dünyasında daha önce görülmemiş bir "Discord-Sunucu" entegrasyonu ile tasarlandı. Amacımız, oyuncuların kayıt süreçleriyle boğulmadan doğrudan eğlenceye ulaşabileceği bir ekosistem yaratmak.
                 </div>
             </div>
         </div>
 
-        <!-- ANA İÇERİK: DELICRAFT -->
-        <main class="w-full max-w-xl text-center">
-            <h1 class="text-6xl md:text-8xl font-extrabold tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 drop-shadow-2xl mb-2">DELICRAFT</h1>
-            <p class="text-xs text-purple-400 font-extrabold tracking-widest uppercase mb-10">🚀 Türkiye'nin En Eğlenceli Discord Entegreli Minecraft Sunucusu</p>
+        <a href="https://discord.gg/hG2DAqyCHG" target="_blank" class="block text-center bg-indigo-600 hover:bg-indigo-500 transition-all py-4 rounded-2xl font-bold text-lg shadow-lg shadow-indigo-900/20">
+            Discord Sunucumuza Katıl
+        </a>
+    </main>
 
-            <div class="bg-zinc-900/60 border border-zinc-800 p-5 rounded-2xl mb-8">
-                <span id="status-text" class="text-sm font-semibold text-zinc-400">Sunucu durumu yükleniyor...</span>
-            </div>
-
-            <div class="bg-zinc-900/90 border border-purple-500/20 rounded-3xl p-8 shadow-2xl">
-                <h2 class="text-2xl font-extrabold mb-4 text-white">Macera Discord'da Başlıyor!</h2>
-                <p class="text-zinc-400 text-sm mb-8">Kayıt işlemleri ve karakter oluşturma adımları tamamen Discord üzerinden yürütülmektedir.</p>
-                <a href="https://discord.gg/hG2DAqyCHG" target="_blank" class="bg-[#5865F2] hover:bg-[#4752C4] px-8 py-4 rounded-xl font-bold transition-all w-full block">Discord'a Katıl & Kayıt Ol</a>
-            </div>
-        </main>
-    </div>
-
-    <script>
-        fetch('https://api.mcsrvstat.us/2/delicraftmc.play.minekube.net')
-            .then(r => r.json())
-            .then(data => {
-                const text = document.getElementById('status-text');
-                text.innerHTML = data.online ? `DeliCraft Çevrimiçi: <span class="text-emerald-400">${data.players.online} Oyuncu Aktif</span>` : '<span class="text-rose-500">DeliCraft Şu An Bakımda</span>';
-            });
-    </script>
+    <footer class="py-8 text-zinc-600 text-sm">© 2026 DeliCraft</footer>
 </body>
 </html>
