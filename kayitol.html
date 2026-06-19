@@ -21,7 +21,8 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        // 🚀 updateProfile fonksiyonunu buraya ekledim kanka (Minecraft adını kaydetmek için)
+        import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
         // BURAYA PUBLIC KEY GELECEK
         emailjs.init("BURAYA_PUBLIC_KEY"); 
@@ -55,9 +56,18 @@
                 const girilenKod = prompt("E-postana gelen 6 haneli kodu gir:");
 
                 if (girilenKod == kod.toString()) {
-                    await createUserWithEmailAndPassword(auth, email, password);
+                    // 1. Firebase üzerinde kullanıcıyı oluşturuyoruz
+                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                    
+                    // 2. 🚀 Minecraft kullanıcı adını Firebase profiline (displayName olarak) kaydediyoruz
+                    await updateProfile(userCredential.user, {
+                        displayName: username
+                    });
+
                     alert("Kayıt başarılı, hoş geldin " + username + "!");
-                    window.location.href = "index.html";
+                    
+                    // 3. 🚀 Kullanıcıyı doğrudan skin ve karakter yönetim sayfasına yönlendiriyoruz
+                    window.location.href = "yonetim.html";
                 } else {
                     alert("Kod yanlış! İşlem iptal edildi.");
                 }
