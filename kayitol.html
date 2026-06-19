@@ -2,43 +2,22 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeliCraft | Kayıt Ol</title>
+    <title>DeliCraft Kayıt</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <style>body { font-family: sans-serif; background: #09090b; color: white; }</style>
 </head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <main class="w-full max-w-md bg-white/5 p-8 rounded-3xl border border-white/10 shadow-2xl">
-        <h2 class="text-3xl font-bold mb-6 text-center">DeliCraft Kayıt</h2>
-        <form id="kayitForm" class="space-y-4">
-            <input type="text" id="username" placeholder="Minecraft Kullanıcı Adı" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl outline-none focus:border-indigo-500 transition" required>
-            <input type="email" id="email" placeholder="E-posta" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl outline-none focus:border-indigo-500 transition" required>
-            <input type="password" id="password" placeholder="Şifre" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl outline-none focus:border-indigo-500 transition" required>
-            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-bold transition duration-200">Hesap Oluştur</button>
-        </form>
-    </main>
+<body class="bg-zinc-950 text-white flex items-center justify-center min-h-screen">
+    <form id="form" class="bg-white/5 p-8 rounded-2xl w-full max-w-sm border border-white/10 space-y-4">
+        <input type="text" id="username" placeholder="Kullanıcı Adı" class="w-full bg-black p-3 rounded-lg border border-white/10" required>
+        <input type="email" id="email" placeholder="E-posta" class="w-full bg-black p-3 rounded-lg border border-white/10" required>
+        <input type="password" id="password" placeholder="Şifre" class="w-full bg-black p-3 rounded-lg border border-white/10" required>
+        <button type="submit" class="w-full bg-indigo-600 p-3 rounded-lg font-bold">Kayıt Ol</button>
+    </form>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+    <script>
+        emailjs.init("xUg90z5zOAawA5leu"); 
 
-        // BURAYA PUBLIC KEY GELECEK
-        emailjs.init("BURAYA_PUBLIC_KEY"); 
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyCkyxgXj4m7lX07UWcuq41f0VYGgaADDYU",
-            authDomain: "delicraft-3fc8e.firebaseapp.com",
-            projectId: "delicraft-3fc8e",
-            storageBucket: "delicraft-3fc8e.firebasestorage.app",
-            messagingSenderId: "93159206834",
-            appId: "1:93159206834:web:ad3dec0d73ae0f6b32feab"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-
-        document.getElementById('kayitForm').addEventListener('submit', async (e) => {
+        document.getElementById('form').addEventListener('submit', async (e) => {
             e.preventDefault();
             const username = document.getElementById('username').value;
             const email = document.getElementById('email').value;
@@ -46,55 +25,20 @@
             const kod = Math.floor(100000 + Math.random() * 900000);
 
             try {
-                // BURAYA SERVICE ID GELECEK (service_ ile başlayan)
-                await emailjs.send("BURAYA_SERVICE_ID_YAZILACAK", "template_hha4g7k", {
-                    to_email: email,
-                    verification_code: kod 
-                });
-
-                const girilenKod = prompt("E-postana gelen 6 haneli kodu gir:");
-
-                if (girilenKod == kod.toString()) {
-                    // 1. Firebase üzerinde kullanıcıyı oluşturuyoruz
-                    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                    
-                    // 2. Minecraft kullanıcı adını Firebase profiline kaydediyoruz
-                    await updateProfile(userCredential.user, {
-                        displayName: username
-                    });
-
-                    // 🔌 3. DELICRAFT KÖPRÜSÜ (MONGODB BAĞLANTI KODU)
-                    // Bilgileri anında oyuna düşmesi için bizim port.js'e yolluyoruz
-                    const kopruTepkisi = await fetch("http://localhost:3000/api/register", {
+                await emailjs.send("DeliCraft", "template_hha4g7k", { to_email: email, verification_code: kod });
+                const girilenKod = prompt("E-postana gelen kodu gir:");
+                
+                if (girilenKod == kod) {
+                    const res = await fetch("http://localhost:3000/api/register", {
                         method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({
-                            username: username,
-                            email: email,
-                            password: password
-                        })
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ username, email, password })
                     });
-
-                    const kopruVerisi = await kopruTepkisi.json();
-
-                    if (!kopruVerisi.success) {
-                        throw new Error("Veritabanı Köprü Hatası: " + kopruVerisi.message);
-                    }
-
-                    alert("Kayıt başarılı, hem siteye hem oyuna hesabın eklendi kanka! Hoş geldin " + username + "!");
-                    
-                    // 4. Yönetim sayfasına yönlendirme
-                    window.location.href = "yonetim.html";
-                } else {
-                    alert("Kod yanlış! İşlem iptal edildi.");
+                    const data = await res.json();
+                    if (data.success) alert("Kayıt Başarılı!");
+                    else alert("Hata: " + data.message);
                 }
-            } catch (error) {
-                console.error("Detaylı Hata:", error);
-                let hataMesaji = error.text || error.message || JSON.stringify(error) || "Bilinmeyen bir hata oluştu";
-                alert("Hata: " + hataMesaji);
-            }
+            } catch (err) { alert("Hata: " + err.message); }
         });
     </script>
 </body>
