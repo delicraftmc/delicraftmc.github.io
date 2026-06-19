@@ -22,7 +22,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-        // EmailJS Başlatma
+        // EmailJS Başlatma (Public Key buraya)
         emailjs.init("BURAYA_PUBLIC_KEY"); 
 
         const firebaseConfig = {
@@ -40,26 +40,23 @@
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-
-            // 1. Kod Üret
             const kod = Math.floor(100000 + Math.random() * 900000);
 
             try {
-                // 2. Mail Gönder
-                await emailjs.send("DeliCraft", "TEMPLATE_ID", {
+                // Mail gönderimi
+                await emailjs.send("DeliCraft", "template_hha4g7k", {
                     to_email: email,
-                    verification_code: kod
+                    verification_code: kod 
                 });
 
-                // 3. Kullanıcıdan Onay Al
                 const girilenKod = prompt("E-postana gelen 6 haneli kodu gir:");
 
-                if (girilenKod == kod) {
+                if (girilenKod == kod.toString()) {
                     await createUserWithEmailAndPassword(auth, email, password);
                     alert("Kayıt başarılı, hoş geldin!");
                     window.location.href = "index.html";
                 } else {
-                    alert("Kod yanlış, işlem iptal edildi.");
+                    alert("Kod yanlış! İşlem iptal edildi.");
                 }
             } catch (error) {
                 alert("Hata: " + error.message);
