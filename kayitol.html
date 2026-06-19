@@ -2,8 +2,10 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeliCraft | Kayıt Ol</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>body { font-family: sans-serif; background: #09090b; color: white; }</style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
@@ -18,7 +20,10 @@
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+
+        // EmailJS Başlatma
+        emailjs.init("BURAYA_PUBLIC_KEY"); 
 
         const firebaseConfig = {
             apiKey: "AIzaSyCkyxgXj4m7lX07UWcuq41f0VYGgaADDYU",
@@ -29,18 +34,33 @@
             appId: "1:93159206834:web:ad3dec0d73ae0f6b32feab"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
+        const auth = getAuth(initializeApp(firebaseConfig));
 
         document.getElementById('kayitForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
+
+            // 1. Kod Üret
+            const kod = Math.floor(100000 + Math.random() * 900000);
+
             try {
-                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-                await sendEmailVerification(userCredential.user);
-                alert("Kayıt başarılı! Lütfen e-postanı kontrol et ve doğrulama linkine tıkla.");
-                window.location.href = "index.html";
+                // 2. Mail Gönder
+                await emailjs.send("DeliCraft", "TEMPLATE_ID", {
+                    to_email: email,
+                    verification_code: kod
+                });
+
+                // 3. Kullanıcıdan Onay Al
+                const girilenKod = prompt("E-postana gelen 6 haneli kodu gir:");
+
+                if (girilenKod == kod) {
+                    await createUserWithEmailAndPassword(auth, email, password);
+                    alert("Kayıt başarılı, hoş geldin!");
+                    window.location.href = "index.html";
+                } else {
+                    alert("Kod yanlış, işlem iptal edildi.");
+                }
             } catch (error) {
                 alert("Hata: " + error.message);
             }
