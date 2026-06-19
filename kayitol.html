@@ -1,67 +1,38 @@
-<!DOCTYPE html>
-<html lang="tr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeliCraft | Kayıt Ol</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-    <style>body { font-family: sans-serif; background: #09090b; color: white; }</style>
-</head>
-<body class="min-h-screen flex items-center justify-center p-4">
-    <main class="w-full max-w-md bg-white/5 p-8 rounded-3xl border border-white/10">
-        <h2 class="text-3xl font-bold mb-6">Kayıt Ol</h2>
-        <form id="kayitForm" class="space-y-4">
-            <input type="email" id="email" placeholder="E-posta" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl outline-none" required>
-            <input type="password" id="password" placeholder="Şifre" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl outline-none" required>
-            <button type="submit" class="w-full bg-indigo-600 py-3 rounded-xl font-bold">Hesap Oluştur</button>
-        </form>
-    </main>
+<input type="text" id="username" placeholder="Minecraft Kullanıcı Adı" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl outline-none" required>
 
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+<script type="module">
+    // ... (Firebase ve EmailJS kısımları aynı kalacak)
 
-        // EmailJS Başlatma (Public Key buraya)
-        emailjs.init("BURAYA_PUBLIC_KEY"); 
+    document.getElementById('kayitForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const username = document.getElementById('username').value; // Kullanıcı adını aldık
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const kod = Math.floor(100000 + Math.random() * 900000);
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyCkyxgXj4m7lX07UWcuq41f0VYGgaADDYU",
-            authDomain: "delicraft-3fc8e.firebaseapp.com",
-            projectId: "delicraft-3fc8e",
-            storageBucket: "delicraft-3fc8e.firebasestorage.app",
-            messagingSenderId: "93159206834",
-            appId: "1:93159206834:web:ad3dec0d73ae0f6b32feab"
-        };
+        try {
+            await emailjs.send("DeliCraft", "template_hha4g7k", {
+                to_email: email,
+                verification_code: kod 
+            });
 
-        const auth = getAuth(initializeApp(firebaseConfig));
+            const girilenKod = prompt("E-postana gelen 6 haneli kodu gir:");
 
-        document.getElementById('kayitForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const kod = Math.floor(100000 + Math.random() * 900000);
-
-            try {
-                // Mail gönderimi
-                await emailjs.send("DeliCraft", "template_hha4g7k", {
-                    to_email: email,
-                    verification_code: kod 
-                });
-
-                const girilenKod = prompt("E-postana gelen 6 haneli kodu gir:");
-
-                if (girilenKod == kod.toString()) {
-                    await createUserWithEmailAndPassword(auth, email, password);
-                    alert("Kayıt başarılı, hoş geldin!");
-                    window.location.href = "index.html";
-                } else {
-                    alert("Kod yanlış! İşlem iptal edildi.");
-                }
-            } catch (error) {
-                alert("Hata: " + error.message);
+            if (girilenKod == kod.toString()) {
+                // Firebase'e kayıt
+                await createUserWithEmailAndPassword(auth, email, password);
+                
+                // Pampa, buraya MongoDB'ye yazdıracak kodu ekleyeceğiz. 
+                // Şimdi MongoDB'ye kayıt atacak olan "fetch" fonksiyonunu hazırla:
+                console.log("Kayıt olundu:", username, email, password);
+                
+                alert("Kayıt başarılı, hoş geldin " + username + "!");
+                window.location.href = "index.html";
+            } else {
+                alert("Kod yanlış!");
             }
-        });
-    </script>
-</body>
-</html>
+        } catch (error) {
+            alert("Hata: " + error.message);
+        }
+    });
+</script>
