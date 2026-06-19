@@ -9,13 +9,13 @@
     <style>body { font-family: sans-serif; background: #09090b; color: white; }</style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4">
-    <main class="w-full max-w-md bg-white/5 p-8 rounded-3xl border border-white/10 shadow-2xl">
-        <h2 class="text-3xl font-bold mb-6 text-center">DeliCraft Kayıt</h2>
+    <main class="w-full max-w-md bg-white/5 p-8 rounded-3xl border border-white/10">
+        <h2 class="text-3xl font-bold mb-6">Kayıt Ol</h2>
         <form id="kayitForm" class="space-y-4">
-            <input type="text" id="username" placeholder="Minecraft Kullanıcı Adı" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl outline-none focus:border-indigo-500 transition" required>
-            <input type="email" id="email" placeholder="E-posta" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl outline-none focus:border-indigo-500 transition" required>
-            <input type="password" id="password" placeholder="Şifre" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl outline-none focus:border-indigo-500 transition" required>
-            <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-700 py-3 rounded-xl font-bold transition duration-200">Hesap Oluştur</button>
+            <input type="text" id="username" placeholder="Minecraft Kullanıcı Adı" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl outline-none" required>
+            <input type="email" id="email" placeholder="E-posta" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl outline-none" required>
+            <input type="password" id="password" placeholder="Şifre" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl outline-none" required>
+            <button type="submit" class="w-full bg-indigo-600 py-3 rounded-xl font-bold">Hesap Oluştur</button>
         </form>
     </main>
 
@@ -50,6 +50,7 @@
                 });
 
                 const girilenKod = prompt("E-postana gelen 6 haneli kodu gir:");
+
                 if (girilenKod == kod.toString()) {
                     await createUserWithEmailAndPassword(auth, email, password);
                     alert("Kayıt başarılı, hoş geldin " + username + "!");
