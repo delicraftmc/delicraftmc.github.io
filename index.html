@@ -8,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body { font-family: 'Montserrat', sans-serif; background: #09090b; color: white; overflow-x: hidden; }
         .glow-blob { position: fixed; width: 400px; height: 400px; background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%); filter: blur(60px); z-index: -1; pointer-events: none; }
@@ -58,7 +59,7 @@
                 <button onclick="toggleBox('hakkimizda-box', this)" class="w-full p-6 text-left font-bold flex justify-between items-center outline-none group">
                     Hakkımızda <span class="text-indigo-400 transition-transform duration-300 ease-in-out inline-block origin-center group-hover:scale-110">▼</span>
                 </button>
-                <div id="hakkimizda-box" class="hidden p-6 pt-0 text-zinc-400 text-sm leading-loose">
+                <div id="hakkimizda-box" class="hidden p-6 pt-0 text-purple-400 font-medium text-sm leading-loose drop-shadow-[0_0_10px_rgba(168,85,247,0.6)]">
                     DeliCraft, 2026 yılında üç yakın arkadaşın bir akşam otururken "Neden kendi dünyamızı kurmuyoruz?" demesiyle ortaya çıkan bir projedir.
                 </div>
             </div>
@@ -89,11 +90,15 @@
                 <button onclick="toggleBox('sosyal-box', this)" class="w-full p-6 text-left font-bold flex justify-between items-center outline-none group">
                     Sosyal Medya <span class="text-indigo-400 transition-transform duration-300 ease-in-out inline-block origin-center group-hover:scale-110">▼</span>
                 </button>
-                <div id="sosyal-box" class="hidden p-6 pt-6 border-t border-white/5 bg-black/20 text-center space-y-4">
-                    <p class="text-zinc-400 text-sm">Sunucu hakkındaki en güncel duyuruları ve eğlenceli içerikleri öğrenmek için bizi takip edebilirsiniz.</p>
-                    <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
-                        <a href="https://www.instagram.com/delicraftmc?igsh=M2J6ZWcwc2I3dzcx&utm_source=qr" target="_blank" class="text-pink-500 font-bold hover:underline hover:text-pink-400 transition-colors drop-shadow-[0_0_8px_rgba(236,72,153,0.5)]">Instagram</a>
-                        <a href="https://www.tiktok.com/@delicraftmc" target="_blank" class="text-white font-bold hover:underline hover:text-zinc-300 transition-colors drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]">TikTok</a>
+                <div id="sosyal-box" class="hidden p-6 pt-6 border-t border-white/5 bg-black/20 text-center space-y-6">
+                    <p class="text-purple-400 font-medium text-sm drop-shadow-[0_0_10px_rgba(168,85,247,0.6)]">Sunucu hakkındaki en güncel duyuruları ve eğlenceli içerikleri öğrenmek için bizi takip edebilirsiniz.</p>
+                    <div class="flex flex-row justify-center items-center gap-8 pb-2">
+                        <a href="https://www.instagram.com/delicraftmc?igsh=M2J6ZWcwc2I3dzcx&utm_source=qr" target="_blank" class="text-pink-500 hover:text-pink-400 transition-all duration-300 drop-shadow-[0_0_12px_rgba(236,72,153,0.6)] hover:scale-125">
+                            <i class="fa-brands fa-instagram text-4xl"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@delicraftmc" target="_blank" class="text-white hover:text-zinc-300 transition-all duration-300 drop-shadow-[0_0_12px_rgba(255,255,255,0.6)] hover:scale-125">
+                            <i class="fa-brands fa-tiktok text-4xl"></i>
+                        </a>
                     </div>
                 </div>
             </div>
