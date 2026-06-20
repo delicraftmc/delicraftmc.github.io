@@ -49,9 +49,9 @@
     </div>
 
     <main class="w-full max-w-3xl space-y-10 py-10">
-        <div class="text-center space-y-4" data-aos="zoom-in" data-aos-duration="1200">
-            <h1 class="text-7xl md:text-9xl font-extrabold tracking-tighter bg-clip-text text-transparent bg-gradient-to-br from-indigo-400 via-purple-500 to-pink-500 drop-shadow-[0_0_30px_rgba(139,92,246,0.5)] hover:scale-[1.02] transition-transform duration-500 cursor-default">DELICRAFT</h1>
-            <p class="text-purple-300/80 font-medium tracking-widest uppercase text-sm drop-shadow-md">Türkiye'nin En Eğlenceli Discord Entegreli Minecraft Sunucusu</p>
+        <div class="text-center space-y-4 px-2" data-aos="zoom-in" data-aos-duration="1200">
+            <h1 class="text-6xl md:text-9xl font-extrabold tracking-tighter break-words bg-clip-text text-transparent bg-gradient-to-br from-indigo-400 via-purple-500 to-pink-500 drop-shadow-[0_0_30px_rgba(139,92,246,0.5)] transition-transform duration-500 cursor-default">DELICRAFT</h1>
+            <p class="text-purple-300/80 font-medium tracking-widest uppercase text-xs sm:text-sm drop-shadow-md">Launcher Destekli Minecraft Gerçek Hayat Simülasyonu</p>
         </div>
 
         <div class="space-y-4">
@@ -121,21 +121,15 @@
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
     <script>
-        // AOS Başlatma
-        AOS.init({
-            once: true,
-            offset: 30
-        });
-
-        // Parçacık (Yıldız Tozu) Efektinin Ayarlanması
+        AOS.init({ once: true, offset: 30 });
         particlesJS("particles-js", {
             "particles": {
                 "number": { "value": 50, "density": { "enable": true, "value_area": 800 } },
-                "color": { "value": "#8b5cf6" }, // Mor tonu
+                "color": { "value": "#8b5cf6" },
                 "shape": { "type": "circle" },
                 "opacity": { "value": 0.5, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } },
                 "size": { "value": 3, "random": true, "anim": { "enable": true, "speed": 2, "size_min": 0.1, "sync": false } },
-                "line_linked": { "enable": false }, // Çizgiler kaldırıldı
+                "line_linked": { "enable": false },
                 "move": { "enable": true, "speed": 0.6, "direction": "top", "random": true, "straight": false, "out_mode": "out", "bounce": false }
             },
             "interactivity": {
@@ -146,23 +140,15 @@
             "retina_detect": true
         });
 
-        // Baloncuk açma kapatma ve ok yönü fonksiyonu
         function toggleBox(boxId, btnElement) {
             document.getElementById(boxId).classList.toggle('hidden');
             const arrow = btnElement.querySelector('span:last-child');
-            // 'rotate-90' kullanıldığında aşağı bakan üçgen (▼) sola döner
-            if (arrow.classList.contains('rotate-90')) {
-                arrow.classList.remove('rotate-90');
-            } else {
-                arrow.classList.add('rotate-90');
-            }
+            arrow.classList.toggle('rotate-90');
         }
 
-        // Discord canlı aktiflik verisini çekme fonksiyonu
         async function fetchDiscordStatus() {
             const guildId = '1494742841627508777';
             const display = document.getElementById('discord-member-count');
-            
             try {
                 const response = await fetch(`https://discord.com/api/guilds/${guildId}/widget.json`);
                 if (!response.ok) throw new Error('Veri çekilemedi');
@@ -173,7 +159,6 @@
             }
         }
 
-        // Sayfa yüklendiğinde ve her 60 saniyede bir veriyi güncelle
         fetchDiscordStatus();
         setInterval(fetchDiscordStatus, 60000);
     </script>
