@@ -12,6 +12,78 @@
     <style>
         body { font-family: 'Montserrat', sans-serif; background: #09090b; color: white; overflow-x: hidden; }
         .glow-blob { position: fixed; width: 400px; height: 400px; background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%); filter: blur(60px); z-index: -1; pointer-events: none; }
+        .download-button {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 18px 34px;
+            isolation: isolate;
+            overflow: hidden;
+            border-radius: 18px;
+            border: 1px solid rgba(167, 139, 250, 0.58);
+            background: linear-gradient(135deg, rgba(49, 46, 129, 0.95), rgba(9, 9, 11, 0.98) 48%, rgba(126, 34, 206, 0.92));
+            color: white;
+            font-weight: 900;
+            letter-spacing: 0.06em;
+            box-shadow: 0 0 28px rgba(99, 102, 241, 0.34), inset 0 0 28px rgba(255, 255, 255, 0.05);
+            transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+        }
+        .download-button::before {
+            content: "";
+            position: absolute;
+            inset: -40%;
+            z-index: -2;
+            background: conic-gradient(from 0deg, transparent, rgba(168, 85, 247, 0.72), rgba(34, 197, 94, 0.50), transparent 38%);
+            animation: download-spin 3.4s linear infinite;
+        }
+        .download-button::after {
+            content: "";
+            position: absolute;
+            inset: 2px;
+            z-index: -1;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #111024, #09090b 58%, #251047);
+        }
+        .download-button:hover {
+            transform: translateY(-3px) scale(1.04);
+            border-color: rgba(216, 180, 254, 0.92);
+            box-shadow: 0 0 46px rgba(168, 85, 247, 0.58), 0 0 22px rgba(34, 197, 94, 0.24);
+        }
+        .download-button .download-icon {
+            display: inline-grid;
+            place-items: center;
+            width: 34px;
+            height: 34px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.10);
+            color: #86efac;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+            animation: download-bounce 1.35s ease-in-out infinite;
+        }
+        .download-button .shine {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: -45%;
+            width: 34%;
+            transform: skewX(-18deg);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent);
+            animation: download-shine 2.4s ease-in-out infinite;
+        }
+        @keyframes download-spin {
+            to { transform: rotate(360deg); }
+        }
+        @keyframes download-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(4px); }
+        }
+        @keyframes download-shine {
+            0% { left: -45%; opacity: 0; }
+            20% { opacity: 1; }
+            55%, 100% { left: 112%; opacity: 0; }
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center p-4 relative">
@@ -109,13 +181,11 @@
                     <span class="text-lime-400 transition-transform duration-300 ease-in-out inline-block origin-center group-hover:scale-110">▼</span>
                 </button>
                 <div id="ip-box" class="hidden p-6 pt-6 border-t border-white/5 bg-black/20 text-center">
-                    <a href="https://drive.google.com/file/d/16rJIn7QvRT2elOID7_2iOSC5cmYpx0Dq/view?usp=sharing" target="_blank" 
-                       class="relative inline-block px-8 py-4 font-bold text-white rounded-xl overflow-hidden transition-all duration-500 
-                       bg-gradient-to-r from-indigo-900 via-black to-indigo-900 border border-indigo-500/50 
-                       hover:scale-105 hover:shadow-[0_0_40px_rgba(79,70,229,0.8)] hover:border-indigo-400 group">
-                        <span class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-500/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-                        <span class="relative flex items-center gap-2">
-                          İNDİR
+                    <a href="downloads/DeliCraft-Client.exe" download="DeliCraft Client.exe" class="download-button group">
+                        <span class="shine"></span>
+                        <span class="download-icon"><i class="fa-solid fa-download"></i></span>
+                        <span class="relative">
+                          DELICRAFT CLIENT İNDİR
                         </span>
                     </a>
                 </div>
