@@ -2,43 +2,131 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <title>DeliCraft Kayıt</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeliCraft | Kayıt Ol</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Montserrat', sans-serif; background: #09090b; color: white; }
+        .glow-blob { position: fixed; width: 520px; height: 520px; background: radial-gradient(circle, rgba(139, 92, 246, 0.18) 0%, transparent 70%); filter: blur(60px); z-index: -1; top: -120px; left: -120px; }
+        .glow-blob-2 { position: fixed; width: 420px; height: 420px; background: radial-gradient(circle, rgba(34, 197, 94, 0.10) 0%, transparent 70%); filter: blur(60px); z-index: -1; bottom: -120px; right: -120px; }
+    </style>
 </head>
-<body class="bg-zinc-950 text-white flex items-center justify-center min-h-screen">
-    <form id="form" class="bg-white/5 p-8 rounded-2xl w-full max-w-sm border border-white/10 space-y-4">
-        <input type="text" id="username" placeholder="Kullanıcı Adı" class="w-full bg-black p-3 rounded-lg border border-white/10" required>
-        <input type="email" id="email" placeholder="E-posta" class="w-full bg-black p-3 rounded-lg border border-white/10" required>
-        <input type="password" id="password" placeholder="Şifre" class="w-full bg-black p-3 rounded-lg border border-white/10" required>
-        <button type="submit" class="w-full bg-indigo-600 p-3 rounded-lg font-bold">Kayıt Ol</button>
-    </form>
+<body class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
+    <div class="glow-blob"></div>
+    <div class="glow-blob-2"></div>
 
-    <script>
-        emailjs.init("xUg90z5zOAawA5leu"); 
+    <main class="w-full max-w-md bg-white/5 p-8 rounded-3xl border border-white/10 shadow-2xl relative z-10 backdrop-blur-sm">
+        <div class="flex flex-col items-center mb-6">
+            <img src="logo.png" alt="Logo" class="w-12 h-12 rounded-xl mb-3 shadow-lg">
+            <h2 class="text-3xl font-extrabold tracking-tight text-center">Kayıt Ol</h2>
+            <p class="text-zinc-400 text-xs mt-1">Kullanıcı adın client içinde kilitlenecek.</p>
+        </div>
 
-        document.getElementById('form').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            const kod = Math.floor(100000 + Math.random() * 900000);
+        <div id="msgBox" class="hidden p-4 rounded-xl text-sm font-semibold mb-4 border transition-all duration-300"></div>
+
+        <form id="registerForm" class="space-y-4">
+            <input type="text" id="username" placeholder="Kullanıcı adı" minlength="3" maxlength="16" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" required>
+            <input type="email" id="email" placeholder="Gmail / e-posta" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" required>
+            <input type="password" id="password" placeholder="Şifre" minlength="6" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" required>
+            <button type="submit" id="submitBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 py-3 rounded-xl font-bold shadow-[0_0_15px_rgba(79,70,229,0.3)] transition duration-200">Kayıt Ol</button>
+        </form>
+
+        <div class="mt-6 text-center text-sm text-zinc-400">
+            Hesabın var mı? <a href="girisyap.html" class="text-indigo-400 hover:underline font-semibold">Giriş Yap</a>
+        </div>
+    </main>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+        import { getFirestore, doc, runTransaction, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCkyxgXj4m7lX07UWcuq41f0VYGgaADDYU",
+            authDomain: "delicraft-3fc8e.firebaseapp.com",
+            projectId: "delicraft-3fc8e",
+            storageBucket: "delicraft-3fc8e.firebasestorage.app",
+            messagingSenderId: "93159206834",
+            appId: "1:93159206834:web:ad3dec0d73ae0f6b32feab",
+            measurementId: "G-W32K1X605V"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        const msgBox = document.getElementById("msgBox");
+        const submitBtn = document.getElementById("submitBtn");
+
+        function showMessage(text, type) {
+            msgBox.textContent = text;
+            msgBox.className = "p-4 rounded-xl text-sm font-semibold mb-4 border transition-all duration-300";
+            msgBox.classList.add(
+                type === "success" ? "bg-emerald-500/10" : "bg-red-500/10",
+                type === "success" ? "border-emerald-500/30" : "border-red-500/30",
+                type === "success" ? "text-emerald-400" : "text-red-400"
+            );
+        }
+
+        function normalizeUsername(value) {
+            return value.trim().replace(/\s+/g, "_");
+        }
+
+        document.getElementById("registerForm").addEventListener("submit", async (event) => {
+            event.preventDefault();
+
+            const username = normalizeUsername(document.getElementById("username").value);
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value;
+
+            if (!/^[a-zA-Z0-9_]{3,16}$/.test(username)) {
+                showMessage("Kullanıcı adı 3-16 karakter olmalı; sadece harf, sayı ve _ kullan.", "error");
+                return;
+            }
+
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Kayıt oluşturuluyor...";
 
             try {
-                await emailjs.send("DeliCraft", "template_hha4g7k", { to_email: email, verification_code: kod });
-                const girilenKod = prompt("E-postana gelen kodu gir:");
-                
-                if (girilenKod == kod) {
-                    const res = await fetch("http://localhost:3000/api/register", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ username, email, password })
+                const credential = await createUserWithEmailAndPassword(auth, email, password);
+                const uid = credential.user.uid;
+                const usernameKey = username.toLowerCase();
+
+                await runTransaction(db, async (transaction) => {
+                    const usernameRef = doc(db, "usernames", usernameKey);
+                    const usernameDoc = await transaction.get(usernameRef);
+
+                    if (usernameDoc.exists()) {
+                        throw new Error("Bu kullanıcı adı alınmış.");
+                    }
+
+                    transaction.set(usernameRef, { uid, username, createdAt: serverTimestamp() });
+                    transaction.set(doc(db, "users", uid), {
+                        username,
+                        usernameKey,
+                        email,
+                        createdAt: serverTimestamp()
                     });
-                    const data = await res.json();
-                    if (data.success) alert("Kayıt Başarılı!");
-                    else alert("Hata: " + data.message);
-                }
-            } catch (err) { alert("Hata: " + err.message); }
+                });
+
+                await sendEmailVerification(credential.user);
+                await signOut(auth);
+
+                showMessage("Kayıt tamam. Gmail/e-posta adresine doğrulama linki gönderdik; linke bastıktan sonra giriş yap.", "success");
+                submitBtn.textContent = "Doğrulama bekleniyor";
+            } catch (error) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Kayıt Ol";
+
+                let message = error.message || "Kayıt oluşturulamadı.";
+
+                if (error.code === "auth/email-already-in-use") message = "Bu e-posta zaten kayıtlı.";
+                if (error.code === "auth/invalid-email") message = "Geçersiz e-posta adresi.";
+                if (error.code === "auth/weak-password") message = "Şifre en az 6 karakter olmalı.";
+
+                showMessage(message, "error");
+            }
         });
     </script>
 </body>

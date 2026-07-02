@@ -42,8 +42,9 @@
     </main>
 
     <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+        import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCkyxgXj4m7lX07UWcuq41f0VYGgaADDYU",
@@ -51,11 +52,13 @@
             projectId: "delicraft-3fc8e",
             storageBucket: "delicraft-3fc8e.firebasestorage.app",
             messagingSenderId: "93159206834",
-            appId: "1:93159206834:web:ad3dec0d73ae0f6b32feab"
+            appId: "1:93159206834:web:ad3dec0d73ae0f6b32feab",
+            measurementId: "G-W32K1X605V"
         };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
 
         const msgBox = document.getElementById('msgBox');
         const submitBtn = document.getElementById('submitBtn');
@@ -82,10 +85,20 @@
             submitBtn.textContent = "Giriş Yapılıyor...";
 
             try {
-                await signInWithEmailAndPassword(auth, email, password);
-                
-                // Başarılı bildirimi
-                showMessage("Giriş başarılı! Panele yönlendiriliyorsunuz...", "success");
+                const credential = await signInWithEmailAndPassword(auth, email, password);
+
+                if (!credential.user.emailVerified) {
+                    await signOut(auth);
+                    showMessage("Önce e-posta adresine gelen doğrulama linkine basmalısın.", "error");
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = "Giriş Yap";
+                    return;
+                }
+
+                const userDoc = await getDoc(doc(db, "users", credential.user.uid));
+                const username = userDoc.exists() ? userDoc.data().username : "Oyuncu";
+
+                showMessage(`Giriş başarılı, ${username}! Panele yönlendiriliyorsunuz...`, "success");
                 
                 // 🚀 Oyuncuyu 1.5 saniye sonra skin paneline (yonetim.html) uçuruyoruz
                 setTimeout(() => {
