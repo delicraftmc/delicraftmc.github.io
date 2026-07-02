@@ -1,5 +1,5 @@
 ﻿{
-  "version": "1.0.2",
+  "version": "1.0.3",
   "downloadUrl": "https://delicraftmc.github.io/downloads/DeliCraft-Client.zip",
-  "notes": "Firebase hesap girişi, kilitli kullanıcı adı, önerilen 1.21.11 sürümü ve otomatik güncelleme eklendi."
+  "notes": "Sunucu IP adresi delicraftnet.play.minekube.net olarak güncellendi."
 }
