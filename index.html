@@ -92,13 +92,6 @@
     <div class="glow-blob top-0 left-0"></div>
     
     <header class="w-full max-w-3xl flex flex-col items-center py-6 px-2 sm:px-4 gap-4" data-aos="fade-down" data-aos-duration="1000">
-        <!-- Kayıt Ol Butonu -->
-        <a href="kayitol.html" class="download-button !px-6 !py-2 !text-xs !gap-2 !rounded-full !shadow-none !border-white/10 !bg-white/5">
-            <span class="shine"></span>
-            <span class="!w-6 !h-6 !text-xs"><i class="fa-solid fa-user-plus"></i></span>
-            <span class="relative">KAYIT OL</span>
-        </a>
-
         <a href="index.html" class="flex items-center gap-2 sm:gap-3 transition-transform hover:scale-105 min-w-0">
             <img src="logo.png" alt="Logo" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg shrink-0 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
             <span class="text-xl sm:text-2xl font-extrabold tracking-tighter truncate drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">DELICRAFT</span>
@@ -231,7 +224,7 @@
         function toggleBox(boxId, btnElement) {
             document.getElementById(boxId).classList.toggle('hidden');
             const arrow = btnElement.querySelector('span:last-child');
-            arrow.classList.toggle('rotate-90');
+            arrow.classList.toggle('-rotate-90');
         }
 
         async function fetchDiscordStatus() {
@@ -248,7 +241,7 @@
         }
 
         fetchDiscordStatus();
-        setInterval(fetchDiscordStatus, 60000);
+        setInterval(fetchDiscordStatus, 1000);
     </script>
 </body>
 </html>
