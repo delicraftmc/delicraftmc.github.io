@@ -190,6 +190,22 @@
                     </a>
                 </div>
             </div>
+
+            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden mt-6 shadow-[0_0_15px_rgba(139,92,246,0.15)] backdrop-blur-md transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(139,92,246,0.3)] hover:bg-white/10" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
+                <button onclick="toggleBox('core-box', this)" class="w-full p-6 text-left flex justify-between items-center outline-none group">
+                    <span class="font-extrabold text-indigo-400 animate-pulse drop-shadow-[0_0_10px_rgba(168,85,247,0.8)] tracking-tight">DLI Core</span>
+                    <span class="text-indigo-400 transition-transform duration-300 ease-in-out inline-block origin-center group-hover:scale-110">▼</span>
+                </button>
+                <div id="core-box" class="hidden p-6 pt-6 border-t border-white/5 bg-black/20 text-center">
+                    <a href="#" class="download-button group !border-indigo-500/50 !bg-gradient-to-br !from-indigo-900 !to-indigo-950">
+                        <span class="shine"></span>
+                        <span class="download-icon !bg-indigo-500/20 !text-indigo-400"><i class="fa-solid fa-clock"></i></span>
+                        <span class="relative">
+                          ÇOK YAKINDA SİZLERLE
+                        </span>
+                    </a>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -200,7 +216,6 @@
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-
     <script>
         AOS.init({ once: true, offset: 30 });
         particlesJS("particles-js", {
@@ -220,13 +235,11 @@
             },
             "retina_detect": true
         });
-
         function toggleBox(boxId, btnElement) {
             document.getElementById(boxId).classList.toggle('hidden');
             const arrow = btnElement.querySelector('span:last-child');
             arrow.classList.toggle('-rotate-90');
         }
-
         async function fetchDiscordStatus() {
             const guildId = '1494742841627508777';
             const display = document.getElementById('discord-member-count');
@@ -239,7 +252,6 @@
                 display.innerText = 'Aktiflik bilgisi kapalı';
             }
         }
-
         fetchDiscordStatus();
         setInterval(fetchDiscordStatus, 1000);
     </script>
