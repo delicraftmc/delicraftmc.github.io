@@ -1,80 +1,385 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DeliCraft | Oyuncu Paneli</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Montserrat', sans-serif; background: #09090b; color: white; }
-        .glow-blob { position: fixed; width: 500px; height: 500px; background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%); filter: blur(60px); z-index: -1; top: -100px; left: -100px; }
-        .glow-blob-2 { position: fixed; width: 400px; height: 400px; background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%); filter: blur(60px); z-index: -1; bottom: -100px; right: -100px; }
-        input[type="file"] { display: none; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DeliCraft Panel</title>
+
+<link rel="icon" type="image/png" href="logo.png">
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+
+<style>
+
+body{
+font-family:'Montserrat',sans-serif;
+background:#09090b;
+color:white;
+overflow-x:hidden;
+}
+
+.glow{
+position:fixed;
+width:500px;
+height:500px;
+border-radius:9999px;
+background:radial-gradient(circle,rgba(139,92,246,.15),transparent 70%);
+filter:blur(80px);
+z-index:-2;
+}
+
+.card{
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.08);
+backdrop-filter:blur(14px);
+border-radius:20px;
+transition:.3s;
+}
+
+.card:hover{
+transform:translateY(-4px);
+box-shadow:0 0 30px rgba(139,92,246,.25);
+}
+
+.sidebar-btn{
+display:flex;
+align-items:center;
+gap:12px;
+padding:14px;
+border-radius:14px;
+transition:.3s;
+font-weight:700;
+}
+
+.sidebar-btn:hover{
+background:rgba(139,92,246,.15);
+box-shadow:0 0 20px rgba(139,92,246,.2);
+}
+
+.console{
+background:#050507;
+font-family:monospace;
+height:300px;
+overflow:auto;
+}
+
+.status-online{
+color:#22c55e;
+}
+
+.status-warning{
+color:#f59e0b;
+}
+
+.status-danger{
+color:#ef4444;
+}
+
+</style>
+
 </head>
-<body class="min-h-screen flex flex-col items-center p-4">
-    <div class="glow-blob"></div>
-    <div class="glow-blob-2"></div>
-    
-    <div id="modal" class="fixed inset-0 bg-black/80 hidden flex items-center justify-center p-4 z-50">
-        <div class="bg-zinc-900 border border-white/10 p-6 rounded-2xl w-full max-w-sm text-center">
-            <h3 id="modalTitle" class="text-xl font-bold mb-4">DeliCraft</h3>
-            <p id="modalText" class="mb-6 text-zinc-400"></p>
-            <button id="modalBtn" class="w-full bg-indigo-600 py-3 rounded-lg font-bold hover:bg-indigo-700 transition">Tamam</button>
-        </div>
-    </div>
 
-    <main class="w-full max-w-5xl">
-        <h1 class="text-3xl font-extrabold mb-8">Karakter Yönetimi</h1>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="lg:col-span-1 bg-white/5 border border-white/10 rounded-3xl p-6 flex flex-col items-center">
-                <img id="skinPreviewImage" src="https://crafatar.com/renders/body/069a79f444e94726a5befca90e38aaf5?overlay=true" class="h-72 object-contain">
-            </div>
-            <div class="lg:col-span-2 space-y-6">
-                <div class="bg-white/5 border border-white/10 rounded-3xl p-6">
-                    <h3 class="text-xl font-bold mb-2">Skin Değiştir</h3>
-                    <input type="file" id="skinInput" accept=".png">
-                    <label for="skinInput" class="bg-indigo-600 px-6 py-3 rounded-xl cursor-pointer">Dosya Seç (Skin)</label>
-                    <span id="skinFileName" class="ml-4 text-sm text-zinc-500">Henüz dosya seçilmedi...</span>
-                </div>
-                
-                <div class="flex gap-4 justify-end mt-4">
-                    <button id="skipButton" class="bg-zinc-800 px-6 py-3 rounded-xl font-bold">Şimdilik Geç</button>
-                    <button id="saveButton" class="bg-emerald-600 px-8 py-3 rounded-xl font-bold">Yükle ve Başla</button>
-                </div>
-            </div>
-        </div>
-    </main>
+<body>
 
-    <script>
-        const modal = document.getElementById('modal');
-        function showModal(title, text) {
-            document.getElementById('modalTitle').innerText = title;
-            document.getElementById('modalText').innerText = text;
-            modal.classList.remove('hidden');
-            return new Promise(resolve => {
-                document.getElementById('modalBtn').onclick = () => {
-                    modal.classList.add('hidden');
-                    resolve();
-                };
-            });
-        }
+<div class="glow top-0 left-0"></div>
+<div class="glow bottom-0 right-0"></div>
 
-        document.getElementById('saveButton').addEventListener('click', async () => {
-            await showModal("Başarılı", "Skin başarıyla yüklendi. Artık oyuna girebilirsin.");
-            window.location.href = 'index.html';
-        });
+<div id="particles-js" class="fixed inset-0 -z-10"></div>
+<div class="flex flex-col lg:flex-row min-h-screen">
 
-        document.getElementById('skipButton').addEventListener('click', async () => {
-            await showModal("Bilgi", "Varsayılan skin atandı! Daha sonra profilinden değiştirebilirsin.");
-            window.location.href = 'index.html';
-        });
-        
-        // Dosya ismi gösterme mantığı aynı...
-        document.getElementById('skinInput').addEventListener('change', (e) => {
-            document.getElementById('skinFileName').textContent = e.target.files[0]?.name || "Henüz dosya seçilmedi...";
-        });
-    </script>
-</body>
-</html>
+<!-- SIDEBAR -->
+
+<div class="hidden lg:block w-72 border-r border-white/10 bg-black/20 backdrop-blur-xl p-6">
+
+<div class="flex items-center gap-3 mb-10">
+
+<img src="logo.png"
+class="w-12 h-12 rounded-xl">
+
+<div>
+<div class="font-extrabold text-xl">
+DELICRAFT
+</div>
+
+<div class="text-xs text-purple-400">
+Yönetim Paneli
+</div>
+</div>
+
+</div>
+
+<div class="space-y-2">
+
+<div class="sidebar-btn">
+<i class="fa-solid fa-house"></i>
+Dashboard
+</div>
+
+<div class="sidebar-btn">
+<i class="fa-solid fa-users"></i>
+Oyuncular
+</div>
+
+<div class="sidebar-btn">
+<i class="fa-solid fa-terminal"></i>
+Konsol
+</div>
+
+<div class="sidebar-btn">
+<i class="fa-brands fa-discord"></i>
+Discord
+</div>
+
+<div class="sidebar-btn">
+<i class="fa-solid fa-cube"></i>
+DLI Core
+</div>
+
+<div class="sidebar-btn">
+<i class="fa-solid fa-gear"></i>
+Ayarlar
+</div>
+
+</div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="flex-1 p-8">
+
+<h1 class="text-5xl font-extrabold mb-2 bg-gradient-to-r from-indigo-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+DELICRAFT PANEL
+</h1>
+
+<p class="text-purple-300 mb-8">
+Minecraft Sunucu Yönetim Merkezi
+</p>
+
+<div class="grid md:grid-cols-4 gap-5">
+
+<div class="card p-5">
+<div class="text-sm text-gray-400">
+Sunucu Durumu
+</div>
+
+<div class="text-3xl font-extrabold status-online">
+ONLINE
+</div>
+</div>
+
+<div class="card p-5">
+<div class="text-sm text-gray-400">
+TPS
+</div>
+
+<div class="text-3xl font-extrabold text-yellow-400">
+19.98
+</div>
+</div>
+
+<div class="card p-5">
+<div class="text-sm text-gray-400">
+RAM
+</div>
+
+<div class="text-3xl font-extrabold text-blue-400">
+6.2GB
+</div>
+</div>
+
+<div class="card p-5">
+<div class="text-sm text-gray-400">
+Oyuncular
+</div>
+
+<div class="text-3xl font-extrabold text-green-400">
+128
+</div>
+</div>
+
+</div>
+<!-- HIZLI İŞLEMLER -->
+
+<div class="grid lg:grid-cols-2 gap-6 mt-8">
+
+<div class="card p-6">
+
+<h2 class="font-extrabold text-xl mb-5">
+Hızlı İşlemler
+</h2>
+
+<div class="grid grid-cols-2 gap-4">
+
+<button class="bg-green-600 hover:bg-green-500 transition p-4 rounded-xl font-bold">
+Sunucuyu Başlat
+</button>
+
+<button class="bg-yellow-600 hover:bg-yellow-500 transition p-4 rounded-xl font-bold">
+Yeniden Başlat
+</button>
+
+<button class="bg-red-600 hover:bg-red-500 transition p-4 rounded-xl font-bold">
+Sunucuyu Durdur
+</button>
+
+<button class="bg-indigo-600 hover:bg-indigo-500 transition p-4 rounded-xl font-bold">
+Whitelist
+</button>
+
+</div>
+
+</div>
+
+<!-- DISCORD -->
+
+<div class="card p-6">
+
+<h2 class="font-extrabold text-xl mb-5">
+Discord Durumu
+</h2>
+
+<div class="space-y-4">
+
+<div class="flex justify-between">
+<span>Bot Durumu</span>
+<span class="status-online font-bold">Çevrimiçi</span>
+</div>
+
+<div class="flex justify-between">
+<span>Ping</span>
+<span class="text-green-400 font-bold">34ms</span>
+</div>
+
+<div class="flex justify-between">
+<span>Aktif Üyeler</span>
+<span class="text-indigo-400 font-bold">248</span>
+</div>
+
+<div class="flex justify-between">
+<span>Son Komut</span>
+<span class="text-purple-400 font-bold">/panel stats</span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- KONSOL -->
+
+<div class="card p-6 mt-8">
+
+<div class="flex justify-between items-center mb-4">
+
+<h2 class="font-extrabold text-xl">
+Canlı Konsol
+</h2>
+
+<span class="text-green-400 font-bold">
+LIVE
+</span>
+
+</div>
+
+<div class="console rounded-xl p-4 text-sm">
+
+<div class="text-green-400">
+[20:15:44 INFO]: Server Started
+</div>
+
+<div class="text-yellow-400">
+[20:15:51 INFO]: Loading DLI Core...
+</div>
+
+<div class="text-blue-400">
+[20:16:02 INFO]: Discord Connected
+</div>
+
+<div class="text-white">
+[20:16:22 INFO]: JAHOCK joined the game
+</div>
+
+<div class="text-white">
+[20:17:11 INFO]: EFES executed command /spawn
+</div>
+
+<div class="text-red-400">
+[20:18:05 WARN]: High RAM usage detected
+</div>
+
+<div class="text-white">
+[20:18:42 INFO]: MALANDINA joined the game
+</div>
+
+</div>
+
+</div>
+
+<!-- OYUNCULAR -->
+
+<div class="card p-6 mt-8">
+
+<h2 class="font-extrabold text-xl mb-5">
+Çevrimiçi Oyuncular
+</h2>
+
+<div class="grid md:grid-cols-3 gap-4">
+
+<div class="bg-white/5 rounded-xl p-4 border border-white/10">
+<div class="font-bold text-pink-400">JAHOCK</div>
+<div class="text-sm text-gray-400">Kurucu</div>
+</div>
+
+<div class="bg-white/5 rounded-xl p-4 border border-white/10">
+<div class="font-bold text-amber-400">EFES</div>
+<div class="text-sm text-gray-400">Yönetici</div>
+</div>
+
+<div class="bg-white/5 rounded-xl p-4 border border-white/10">
+<div class="font-bold text-blue-400">MALANDINA</div>
+<div class="text-sm text-gray-400">Moderatör</div>
+</div>
+
+</div>
+
+</div>
+<!-- DLI CORE -->
+
+<div class="card p-6 mt-8">
+
+<h2 class="font-extrabold text-xl mb-5">
+DLI Core Modülleri
+</h2>
+
+<div class="grid md:grid-cols-3 gap-4">
+
+<div class="bg-green-500/10 border border-green-500/30 rounded-xl p-5">
+<div class="font-bold text-green-400">
+Economy
+</div>
+<div class="text-sm text-gray-400 mt-1">
+Aktif
+</div>
+</div>
+
+<div class="bg-green-500/10 border border-green-500/30 rounded-xl p-5">
+<div class="font-bold text-green-400">
+Discord API
+</div>
+<div class="text-sm text-gray-400 mt-1">
+Aktif
+</div>
+</div>
+
+<div class="bg-green-500/10 border border-green-500/30 rounded-xl p-5">
+<div class="font-bold text-green-400">
+Panel Bridge
+</div>
+<div class="
+
