@@ -6,19 +6,18 @@
     <title>DeliCraft | Ana Sayfa</title>
     <link rel="icon" type="image/png" href="logo.png">
     
-    <!-- CSS Kütüphaneleri -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <!-- Özel Stiller -->
     <style>
-        body {
+        html, body {
             font-family: 'Montserrat', sans-serif;
             background: #09090b;
             color: white;
             overflow-x: hidden;
+            width: 100%;
         }
 
         /* Sidebar Menü */
@@ -66,12 +65,19 @@
         /* Glow Blob */
         .glow-blob {
             position: fixed;
-            width: 400px;
-            height: 400px;
+            width: 300px;
+            height: 300px;
             background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
             filter: blur(60px);
             z-index: -1;
             pointer-events: none;
+        }
+
+        @media (min-width: 768px) {
+            .glow-blob {
+                width: 400px;
+                height: 400px;
+            }
         }
 
         /* İndir Butonu Stilleri */
@@ -81,7 +87,7 @@
             align-items: center;
             justify-content: center;
             gap: 12px;
-            padding: 18px 34px;
+            padding: 16px 28px;
             isolation: isolate;
             overflow: hidden;
             border-radius: 18px;
@@ -93,6 +99,15 @@
             box-shadow: 0 0 28px rgba(99, 102, 241, 0.34), inset 0 0 28px rgba(255, 255, 255, 0.05);
             transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
             cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        @media (min-width: 640px) {
+            .download-button {
+                padding: 18px 34px;
+                width: auto;
+            }
         }
 
         .download-button::before {
@@ -176,17 +191,26 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 12px;
-            padding: 12px 28px;
+            gap: 8px;
+            padding: 10px 20px;
             background: linear-gradient(135deg, #5865F2 0%, #4752C4 100%);
             border: 1px solid rgba(88, 101, 242, 0.6);
             color: white;
             border-radius: 12px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-decoration: none;
+            white-space: nowrap;
+        }
+
+        @media (min-width: 640px) {
+            .discord-login-btn {
+                gap: 12px;
+                padding: 12px 28px;
+                font-size: 14px;
+            }
         }
 
         .discord-login-btn:hover {
@@ -199,12 +223,18 @@
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 16px;
+            padding: 8px 12px;
             background: rgba(88, 101, 242, 0.15);
             border: 1px solid rgba(88, 101, 242, 0.3);
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
+        }
+
+        @media (min-width: 640px) {
+            .user-profile {
+                padding: 8px 16px;
+            }
         }
 
         .user-profile:hover {
@@ -219,16 +249,13 @@
     </style>
 </head>
 
-<body class="min-h-screen flex flex-col items-center p-4 relative">
-    <!-- Parçacık Arka Planı -->
+<body class="min-h-screen flex flex-col items-center p-0 sm:p-4 relative">
     <div id="particles-js" class="fixed inset-0 z-[-2] pointer-events-none"></div>
     <div class="glow-blob top-0 left-0"></div>
     <div class="glow-blob bottom-0 right-0"></div>
 
-    <!-- Overlay (Sidebar Arkaplanı) -->
     <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
-    <!-- SIDEBAR MENÜ -->
     <div id="sidebar" class="sidebar fixed top-0 left-0 h-full w-64 z-50 p-6 flex flex-col gap-2 overflow-y-auto">
         <div class="flex items-center justify-between mb-8">
             <div class="flex items-center gap-3">
@@ -272,7 +299,7 @@
 
         <div id="menu-auth" class="mt-auto border-t border-white/10 pt-4 space-y-2">
             <a id="menu-login" href="#" onclick="loginWithDiscord(event)" class="menu-item text-indigo-400">
-                <i class="fa-solid fa-user"></i> Discord ile Giriş
+                <i class="fa-solid fa-user"></i> Discord Giriş
             </a>
             <div id="menu-profile" class="hidden">
                 <div class="menu-item text-green-400 mb-2">
@@ -285,26 +312,25 @@
         </div>
     </div>
 
-    <!-- BAŞLIK (HEADER) -->
-    <header class="w-full max-w-5xl flex items-center justify-between py-6 px-2 sm:px-4 relative z-30">
-        <button onclick="toggleMenu()" class="text-white text-2xl hover:text-indigo-400 transition">
+    <header class="w-full max-w-5xl flex items-center justify-between py-4 sm:py-6 px-4 sm:px-2 relative z-30">
+        <button onclick="toggleMenu()" class="text-white text-2xl hover:text-indigo-400 transition mr-2 sm:mr-0">
             <i class="fa-solid fa-bars"></i>
         </button>
         <a href="index.html" class="flex items-center gap-2 sm:gap-3 transition-transform hover:scale-105">
             <img src="logo.png" alt="DeliCraft Logo" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
             <span class="text-xl sm:text-2xl font-extrabold tracking-tighter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">DELICRAFT</span>
         </a>
-        <div id="header-auth" class="w-10 sm:w-auto">
+        <div id="header-auth" class="flex-shrink-0 ml-auto sm:ml-0">
             <a id="header-login" href="#" onclick="loginWithDiscord(event)" class="discord-login-btn">
                 <i class="fa-brands fa-discord"></i> <span class="hidden sm:inline">Discord ile Giriş</span><span class="sm:hidden">Giriş</span>
             </a>
-            <div id="header-profile" class="hidden">
+            <div id="header-profile" class="hidden relative">
                 <div class="user-profile" onclick="toggleProfileMenu()">
                     <img id="profile-avatar" src="" alt="Avatar">
                     <span id="profile-username" class="hidden sm:inline text-sm font-bold"></span>
                     <i class="fa-solid fa-chevron-down text-xs"></i>
                 </div>
-                <div id="profile-menu" class="hidden absolute top-16 right-4 sm:right-8 glass rounded-xl p-2 min-w-[150px]">
+                <div id="profile-menu" class="hidden absolute top-14 right-0 sm:right-0 glass rounded-xl p-2 min-w-[150px] z-50">
                     <a href="yonetim.html" class="block px-4 py-2 hover:bg-white/10 rounded-lg transition text-sm">
                         <i class="fa-solid fa-cog"></i> Panel
                     </a>
@@ -316,9 +342,8 @@
         </div>
     </header>
 
-    <!-- DISCORD VE AKTİFLİK BÖLÜMÜ -->
-    <div class="w-full max-w-5xl flex flex-col items-center py-2 space-y-3" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
-        <a href="https://discord.gg/psMWPVfbwm" target="_blank" class="inline-flex items-center gap-3 px-5 py-2 rounded-full glass hover:bg-indigo-600/20 transition-all">
+    <div class="w-full max-w-5xl flex flex-col sm:flex-row items-center justify-center py-2 space-y-3 sm:space-y-0 sm:space-x-4 px-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+        <a href="https://discord.gg/psMWPVfbwm" target="_blank" class="w-full sm:w-auto flex items-center justify-center gap-3 px-5 py-2.5 rounded-full glass hover:bg-indigo-600/20 transition-all">
             <div class="relative flex h-3 w-3">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-3 w-3 bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,1)]"></span>
@@ -326,7 +351,7 @@
             <span class="text-sm font-bold text-indigo-200 tracking-wide">Discord Sunucumuza Katıl</span>
         </a>
 
-        <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full glass hover:bg-green-500/20 transition-all">
+        <div class="w-full sm:w-auto flex items-center justify-center gap-3 px-5 py-2.5 rounded-full glass hover:bg-green-500/20 transition-all">
             <div class="relative flex h-3 w-3">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-[0_0_8px_rgba(34,197,94,1)]"></span>
@@ -335,96 +360,89 @@
         </div>
     </div>
 
-    <!-- ANA İÇERİK -->
-    <main class="w-full max-w-5xl space-y-12 py-10">
-        <!-- Başlık Bölümü -->
-        <div id="ana-sayfa" class="text-center space-y-4 px-2" data-aos="zoom-in" data-aos-duration="1200">
-            <h1 class="text-6xl md:text-8xl font-extrabold tracking-tighter break-words bg-clip-text text-transparent bg-gradient-to-br from-indigo-400 via-purple-500 to-pink-500">
+    <main class="w-full max-w-5xl space-y-10 sm:space-y-12 py-8 sm:py-10 px-4">
+        <div id="ana-sayfa" class="text-center space-y-4" data-aos="zoom-in" data-aos-duration="1200">
+            <h1 class="text-5xl sm:text-6xl md:text-8xl font-extrabold tracking-tighter break-words bg-clip-text text-transparent bg-gradient-to-br from-indigo-400 via-purple-500 to-pink-500 leading-tight">
                 DELICRAFT
             </h1>
             <p class="text-purple-300/80 font-medium tracking-widest uppercase text-xs sm:text-sm">Modern Minecraft Deneyimi</p>
             <p class="text-gray-400 text-sm">Şimdiden iyi oyunlar dileriz..</p>
         </div>
 
-        <!-- Ana Kartlar (2 Sütun) -->
-        <div class="grid md:grid-cols-2 gap-6">
-            <!-- Hakkımızda Kartı -->
-            <div id="hakkimizda" class="glass p-6 rounded-2xl transition-all hover:shadow-[0_0_25px_rgba(139,92,246,0.2)] hover:scale-[1.02]" data-aos="fade-right">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div id="hakkimizda" class="glass p-6 sm:p-8 rounded-2xl transition-all hover:shadow-[0_0_25px_rgba(139,92,246,0.2)] hover:scale-[1.02]" data-aos="fade-right">
                 <div class="flex items-center gap-3 mb-4">
                     <i class="fa-solid fa-circle-info text-indigo-400 text-2xl"></i>
-                    <h2 class="text-xl font-bold">Hakkımızda</h2>
+                    <h2 class="text-xl sm:text-2xl font-bold">Hakkımızda</h2>
                 </div>
                 <p class="text-purple-400 font-medium text-sm leading-loose">
-                    DeliCraft, 2026 yılında kurulmuş, survival, takas, ekonomi ve raid gibi kapsamlara sahip, gelişme sürecinde olan bir Minecraft topluluk sunucusudur. Üç arkadaşın ortak hayali olarak başlayan bu proje, oyuncular için eğlenceli ve rekabetçi bir ortam sağlamayı amaçlamaktadır.
+                    DeliCraft, 2026 yılında kurulmuş, survival, takas, ekonomi ve raid gibi kapsamlara sahip, gelişme sürecinde olan bir Minecraft topluluk sunucusudur. Ortak bir hayal olarak başlayan bu proje, oyuncular için eğlenceli ve rekabetçi bir ortam sağlamayı amaçlamaktadır.
                 </p>
             </div>
 
-            <!-- Kurucular Kartı -->
-            <div id="kurucular" class="glass p-6 rounded-2xl transition-all hover:shadow-[0_0_25px_rgba(139,92,246,0.2)] hover:scale-[1.02]" data-aos="fade-left">
+            <div id="kurucular" class="glass p-6 sm:p-8 rounded-2xl transition-all hover:shadow-[0_0_25px_rgba(139,92,246,0.2)] hover:scale-[1.02]" data-aos="fade-left">
                 <div class="flex items-center gap-3 mb-4">
                     <i class="fa-solid fa-users text-indigo-400 text-2xl"></i>
-                    <h2 class="text-xl font-bold">Kurucular</h2>
+                    <h2 class="text-xl sm:text-2xl font-bold">Kurucular</h2>
                 </div>
                 <div class="space-y-3">
-                    <div class="flex items-center justify-between p-3 bg-pink-500/10 rounded-lg border border-pink-500/30">
-                        <span class="font-bold text-pink-400">EFES</span>
-                        <span class="text-xs text-pink-300">Sorumlu</span>
-                    </div>
-                    <div class="flex items-center justify-between p-3 bg-amber-500/10 rounded-lg border border-amber-500/30">
+                    <div class="flex items-center justify-between p-3.5 bg-amber-500/10 rounded-xl border border-amber-500/30">
                         <span class="font-bold text-amber-400">JAHOCK</span>
-                        <span class="text-xs text-amber-300">Baş Sorumlu</span>
+                        <span class="text-xs font-semibold text-amber-300 px-2 py-1 bg-amber-500/20 rounded-md">Kurucu</span>
                     </div>
-                    <div class="flex items-center justify-between p-3 bg-blue-500/10 rounded-lg border border-blue-500/30">
-                        <span class="font-bold text-blue-400">MALANDİNA</span>
-                        <span class="text-xs text-blue-300">Sorumlu</span>
+                    <div class="flex items-center justify-between p-3.5 bg-purple-500/10 rounded-xl border border-purple-500/30">
+                        <span class="font-bold text-purple-400">JAHOCK</span>
+                        <span class="text-xs font-semibold text-purple-300 px-2 py-1 bg-purple-500/20 rounded-md">Geliştirici</span>
+                    </div>
+                    <div class="flex items-center justify-between p-3.5 bg-indigo-500/10 rounded-xl border border-indigo-500/30">
+                        <span class="font-bold text-indigo-400">JAHOCK</span>
+                        <span class="text-xs font-semibold text-indigo-300 px-2 py-1 bg-indigo-500/20 rounded-md">Tasarımcı</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Özellikler Kartı -->
-        <div id="ozellikler" class="glass p-8 rounded-2xl transition-all hover:shadow-[0_0_25px_rgba(139,92,246,0.2)]" data-aos="fade-up">
+        <div id="ozellikler" class="glass p-6 sm:p-8 rounded-2xl transition-all hover:shadow-[0_0_25px_rgba(139,92,246,0.2)]" data-aos="fade-up">
             <div class="flex items-center gap-3 mb-6">
                 <i class="fa-solid fa-sparkles text-yellow-400 text-2xl"></i>
-                <h2 class="text-2xl font-bold">Sunucu Özellikleri</h2>
+                <h2 class="text-xl sm:text-2xl font-bold">Sunucu Özellikleri</h2>
             </div>
-            <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
-                <div class="p-4 bg-green-500/10 border border-green-500/30 rounded-lg">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                <div class="p-4 bg-green-500/10 border border-green-500/30 rounded-xl">
                     <div class="font-bold text-green-400">Survival Mode</div>
                     <div class="text-xs text-gray-400 mt-1">Gerçek Minecraft Deneyimi</div>
                 </div>
-                <div class="p-4 bg-blue-500/10 border border-blue-500/30 rounded-lg">
+                <div class="p-4 bg-blue-500/10 border border-blue-500/30 rounded-xl">
                     <div class="font-bold text-blue-400">Ekonomi Sistemi</div>
                     <div class="text-xs text-gray-400 mt-1">Ticaret ve Para</div>
                 </div>
-                <div class="p-4 bg-purple-500/10 border border-purple-500/30 rounded-lg">
+                <div class="p-4 bg-purple-500/10 border border-purple-500/30 rounded-xl">
                     <div class="font-bold text-purple-400">Raid Sistemi</div>
                     <div class="text-xs text-gray-400 mt-1">PvP Etkinlikleri</div>
                 </div>
-                <div class="p-4 bg-pink-500/10 border border-pink-500/30 rounded-lg">
+                <div class="p-4 bg-pink-500/10 border border-pink-500/30 rounded-xl">
                     <div class="font-bold text-pink-400">Takas Sistemi</div>
                     <div class="text-xs text-gray-400 mt-1">Oyuncu İşbirlikleri</div>
                 </div>
-                <div class="p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-lg">
+                <div class="p-4 bg-indigo-500/10 border border-indigo-500/30 rounded-xl">
                     <div class="font-bold text-indigo-400">Discord Entegrasyonu</div>
                     <div class="text-xs text-gray-400 mt-1">Canlı İletişim</div>
                 </div>
-                <div class="p-4 bg-lime-500/10 border border-lime-500/30 rounded-lg">
+                <div class="p-4 bg-lime-500/10 border border-lime-500/30 rounded-xl">
                     <div class="font-bold text-lime-400">24/7 Aktif</div>
                     <div class="text-xs text-gray-400 mt-1">Her Zaman Çalışır</div>
                 </div>
             </div>
         </div>
 
-        <!-- DeliCraft Launcher Kartı -->
-        <div id="launcher" class="glass p-8 rounded-2xl shadow-[0_0_15px_rgba(74,222,128,0.15)] transition-all hover:shadow-[0_0_25px_rgba(74,222,128,0.25)]" data-aos="fade-up" data-aos-delay="100">
-            <div class="text-center space-y-4">
+        <div id="launcher" class="glass p-6 sm:p-8 rounded-2xl shadow-[0_0_15px_rgba(74,222,128,0.15)] transition-all hover:shadow-[0_0_25px_rgba(74,222,128,0.25)]" data-aos="fade-up" data-aos-delay="100">
+            <div class="text-center space-y-5">
                 <div class="flex items-center justify-center gap-3">
                     <i class="fa-solid fa-download text-lime-400 text-2xl animate-pulse"></i>
-                    <h2 class="text-2xl font-extrabold text-lime-400">DeliCraft Launcher</h2>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-lime-400">DeliCraft Launcher</h2>
                 </div>
-                <p class="text-sm text-gray-400">Sunucuya hızlı ve kolay erişim için özel launcheri indir</p>
-                <a href="https://drive.google.com/uc?export=download&id=1EWjHLq1_6ZYJo9uuwF2ZDSsDmSgeA56h" class="download-button group inline-block">
+                <p class="text-sm text-gray-400 px-2">Sunucuya hızlı ve kolay erişim için özel launcheri indir</p>
+                <a href="https://drive.google.com/uc?export=download&id=1EWjHLq1_6ZYJo9uuwF2ZDSsDmSgeA56h" class="download-button group inline-flex">
                     <span class="shine"></span>
                     <span class="download-icon"><i class="fa-solid fa-download"></i></span>
                     <span class="relative">LAUNCHER İNDİR</span>
@@ -432,48 +450,44 @@
             </div>
         </div>
 
-        <!-- DLI Core Kartı -->
-        <div id="dli-core" class="glass p-8 rounded-2xl shadow-[0_0_15px_rgba(139,92,246,0.15)] transition-all hover:shadow-[0_0_25px_rgba(139,92,246,0.25)]" data-aos="fade-up" data-aos-delay="200">
-            <div class="text-center space-y-4">
+        <div id="dli-core" class="glass p-6 sm:p-8 rounded-2xl shadow-[0_0_15px_rgba(139,92,246,0.15)] transition-all hover:shadow-[0_0_25px_rgba(139,92,246,0.25)]" data-aos="fade-up" data-aos-delay="200">
+            <div class="text-center space-y-5">
                 <div class="flex items-center justify-center gap-3">
                     <i class="fa-solid fa-microchip text-indigo-400 text-2xl animate-pulse"></i>
-                    <h2 class="text-2xl font-extrabold text-indigo-400">DLI Core</h2>
+                    <h2 class="text-xl sm:text-2xl font-extrabold text-indigo-400">DLI Core</h2>
                 </div>
-                <p class="text-sm text-gray-400">Projemizin en güçlü parçası - Tüm sunucu özellikleri burada</p>
-                <button class="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl font-bold hover:from-indigo-500 hover:to-purple-500 transition transform hover:scale-105">
+                <p class="text-sm text-gray-400 px-2">Projemizin en güçlü parçası - Tüm sunucu özellikleri burada</p>
+                <button class="w-full sm:w-auto px-6 sm:px-8 py-3.5 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl font-bold hover:from-indigo-500 hover:to-purple-500 transition transform hover:scale-105 text-sm sm:text-base">
                     ÇOK YAKINDA SİZLERLE 🚀
                 </button>
             </div>
         </div>
 
-        <!-- Sosyal Medya Kartı -->
-        <div class="glass p-8 rounded-2xl text-center transition-all hover:shadow-[0_0_25px_rgba(139,92,246,0.2)]" data-aos="fade-up" data-aos-delay="300">
-            <h2 class="text-2xl font-bold mb-4 flex items-center justify-center gap-2">
+        <div class="glass p-6 sm:p-8 rounded-2xl text-center transition-all hover:shadow-[0_0_25px_rgba(139,92,246,0.2)]" data-aos="fade-up" data-aos-delay="300">
+            <h2 class="text-xl sm:text-2xl font-bold mb-3 flex items-center justify-center gap-2">
                 <i class="fa-solid fa-share text-pink-400"></i>
                 Sosyal Medyada Takip Edin
             </h2>
-            <p class="text-sm text-gray-400 mb-6">En güncel duyuruları ve eğlenceli içerikleri kaçırma!</p>
-            <div class="flex justify-center gap-8">
-                <a href="https://www.instagram.com/delicraftmc" target="_blank" class="text-pink-500 hover:text-pink-400 transition-all transform hover:scale-125">
-                    <i class="fa-brands fa-instagram text-5xl"></i>
+            <p class="text-sm text-gray-400 mb-8 px-2">En güncel duyuruları ve eğlenceli içerikleri kaçırma!</p>
+            <div class="flex justify-center gap-6 sm:gap-8 flex-wrap">
+                <a href="https://www.instagram.com/delicraftmc" target="_blank" class="text-pink-500 hover:text-pink-400 transition-all transform hover:scale-125 p-2">
+                    <i class="fa-brands fa-instagram text-4xl sm:text-5xl"></i>
                 </a>
-                <a href="https://www.tiktok.com/@delicraftmc" target="_blank" class="text-white hover:text-zinc-300 transition-all transform hover:scale-125">
-                    <i class="fa-brands fa-tiktok text-5xl"></i>
+                <a href="https://www.tiktok.com/@delicraftmc" target="_blank" class="text-white hover:text-zinc-300 transition-all transform hover:scale-125 p-2">
+                    <i class="fa-brands fa-tiktok text-4xl sm:text-5xl"></i>
                 </a>
-                <a href="https://discord.gg/psMWPVfbwm" target="_blank" class="text-indigo-400 hover:text-indigo-300 transition-all transform hover:scale-125">
-                    <i class="fa-brands fa-discord text-5xl"></i>
+                <a href="https://discord.gg/psMWPVfbwm" target="_blank" class="text-indigo-400 hover:text-indigo-300 transition-all transform hover:scale-125 p-2">
+                    <i class="fa-brands fa-discord text-4xl sm:text-5xl"></i>
                 </a>
             </div>
         </div>
     </main>
 
-    <!-- FOOTER (ALT KISIM) -->
-    <footer class="w-full text-center py-8 text-gray-500 text-xs mt-12 border-t border-white/10">
+    <footer class="w-full text-center py-6 sm:py-8 text-gray-500 text-xs mt-8 sm:mt-12 border-t border-white/10 px-4">
         <p>© 2026 DeliCraft. Tüm hakları JAHOCK'a aittir.</p>
         <p class="mt-1">Bu web sitesi ve tüm içerikler telif hakkı ile korunmaktadır.</p>
     </footer>
 
-    <!-- JavaScript Kütüphaneleri -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     
@@ -481,7 +495,7 @@
         // AOS (Animate On Scroll) başlat
         AOS.init({ once: true, offset: 30 });
 
-        // Parçacık efekti ayarları
+        // Parçacık efekti ayarları (Mobilde performans için optimize edilebilir ama dokunmuyoruz)
         particlesJS("particles-js", {
             "particles": {
                 "number": { "value": 50, "density": { "enable": true, "value_area": 800 } },
@@ -543,7 +557,7 @@
         // UI'yi kullanıcı bilgileriyle güncelle
         function updateUIWithUser(user) {
             // Header
-            document.getElementById('header-login').parentElement.style.display = 'none';
+            document.getElementById('header-login').style.display = 'none';
             document.getElementById('header-profile').style.display = 'block';
             document.getElementById('profile-avatar').src = user.avatar_url;
             document.getElementById('profile-username').textContent = user.username;
@@ -562,7 +576,7 @@
         document.addEventListener('click', (e) => {
             const profileMenu = document.getElementById('profile-menu');
             const userProfile = document.querySelector('.user-profile');
-            if (profileMenu && !profileMenu.parentElement.contains(e.target)) {
+            if (profileMenu && !profileMenu.classList.contains('hidden') && !e.target.closest('#header-profile')) {
                 profileMenu.classList.add('hidden');
             }
         });
@@ -572,13 +586,14 @@
             localStorage.removeItem('delicraft_user');
             
             // UI'yi sıfırla
-            document.getElementById('header-login').parentElement.style.display = 'block';
+            document.getElementById('header-login').style.display = 'inline-flex';
             document.getElementById('header-profile').style.display = 'none';
-            document.getElementById('menu-login').style.display = 'block';
+            document.getElementById('menu-login').style.display = 'flex';
             document.getElementById('menu-profile').style.display = 'none';
             
             // Menüyü kapat
-            toggleMenu();
+            document.getElementById('profile-menu').classList.add('hidden');
+            if(document.getElementById('sidebar').classList.contains('active')) toggleMenu();
         }
 
         // Discord Durumu Çek
