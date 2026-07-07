@@ -5,13 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DeliCraft | Ana Sayfa</title>
     <link rel="icon" type="image/png" href="logo.png">
+    
+    <!-- CSS Kütüphaneleri -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Özel Stiller -->
     <style>
-        body { font-family: 'Montserrat', sans-serif; background: #09090b; color: white; overflow-x: hidden; }
-        .glow-blob { position: fixed; width: 400px; height: 400px; background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%); filter: blur(60px); z-index: -1; pointer-events: none; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: #09090b;
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .glow-blob {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(139, 92, 246, 0.15) 0%, transparent 70%);
+            filter: blur(60px);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* İndir Butonu Stilleri */
         .download-button {
             position: relative;
             display: inline-flex;
@@ -29,7 +49,9 @@
             letter-spacing: 0.06em;
             box-shadow: 0 0 28px rgba(99, 102, 241, 0.34), inset 0 0 28px rgba(255, 255, 255, 0.05);
             transition: transform 0.28s ease, box-shadow 0.28s ease, border-color 0.28s ease;
+            cursor: pointer;
         }
+
         .download-button::before {
             content: "";
             position: absolute;
@@ -38,6 +60,7 @@
             background: conic-gradient(from 0deg, transparent, rgba(168, 85, 247, 0.72), rgba(34, 197, 94, 0.50), transparent 38%);
             animation: download-spin 3.4s linear infinite;
         }
+
         .download-button::after {
             content: "";
             position: absolute;
@@ -46,12 +69,14 @@
             border-radius: 16px;
             background: linear-gradient(135deg, #111024, #09090b 58%, #251047);
         }
+
         .download-button:hover {
             transform: translateY(-3px) scale(1.04);
             border-color: rgba(216, 180, 254, 0.92);
             box-shadow: 0 0 46px rgba(168, 85, 247, 0.58), 0 0 22px rgba(34, 197, 94, 0.24);
         }
-        .download-button .download-icon {
+
+        .download-icon {
             display: inline-grid;
             place-items: center;
             width: 34px;
@@ -62,7 +87,8 @@
             box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
             animation: download-bounce 1.35s ease-in-out infinite;
         }
-        .download-button .shine {
+
+        .shine {
             position: absolute;
             top: 0;
             bottom: 0;
@@ -72,13 +98,17 @@
             background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.32), transparent);
             animation: download-shine 2.4s ease-in-out infinite;
         }
+
+        /* Animasyonlar */
         @keyframes download-spin {
             to { transform: rotate(360deg); }
         }
+
         @keyframes download-bounce {
             0%, 100% { transform: translateY(0); }
             50% { transform: translateY(4px); }
         }
+
         @keyframes download-shine {
             0% { left: -45%; opacity: 0; }
             20% { opacity: 1; }
@@ -86,24 +116,23 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col items-center p-4 relative">
-    <div id="particles-js" class="fixed inset-0 z-[-2] pointer-events-none"></div>
 
+<body class="min-h-screen flex flex-col items-center p-4 relative">
+    <!-- Parçacık Arka Planı -->
+    <div id="particles-js" class="fixed inset-0 z-[-2] pointer-events-none"></div>
     <div class="glow-blob top-0 left-0"></div>
     
+    <!-- BAŞLIK (HEADER) -->
     <header class="w-full max-w-3xl flex flex-col items-center py-6 px-2 sm:px-4 gap-4" data-aos="fade-down" data-aos-duration="1000">
         <a href="index.html" class="flex items-center gap-2 sm:gap-3 transition-transform hover:scale-105 min-w-0">
-            <img src="logo.png" alt="Logo" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg shrink-0 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
+            <img src="logo.png" alt="DeliCraft Logo" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg shrink-0 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
             <span class="text-xl sm:text-2xl font-extrabold tracking-tighter truncate drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">DELICRAFT</span>
         </a>
-        <div class="hidden flex items-center space-x-2 sm:space-x-4 shrink-0 whitespace-nowrap">
-            <a href="girisyap.html" class="text-xs sm:text-sm font-semibold hover:text-indigo-400 transition-colors">Giriş Yap</a>
-            <a href="kayitol.html" class="bg-indigo-600 px-3 py-1.5 sm:px-5 sm:py-2 rounded-full text-xs sm:text-sm font-bold hover:bg-indigo-500 transition-all hover:shadow-[0_0_15px_rgba(79,70,229,0.5)]">Kayıt Ol</a>
-        </div>
     </header>
 
+    <!-- DISCORD VE AKTİFLİK BÖLÜMÜ -->
     <div class="w-full max-w-3xl flex flex-col items-center py-2 space-y-3" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
-        <a href="https://discord.gg/psMWPVfbwm" target="_blank" class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-indigo-600/10 border border-indigo-500/20 shadow-sm backdrop-blur-md transition-all duration-300 hover:bg-indigo-600/30 hover:scale-105 hover:shadow-[0_0_20px_rgba(99,102,241,0.4)]">
+        <a href="https://discord.gg/psMWPVfbwm" target="_blank" class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-indigo-600/10 border border-indigo-500/20 shadow-sm backdrop-blur-md hover:bg-indigo-600/20 transition-all">
             <div class="relative flex h-3 w-3">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-3 w-3 bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,1)]"></span>
@@ -111,7 +140,7 @@
             <span class="text-sm font-bold text-indigo-200 tracking-wide">Discord Sunucumuza Katıl</span>
         </a>
 
-        <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-green-500/10 border border-green-500/20 shadow-sm backdrop-blur-md transition-all duration-300 hover:bg-green-500/20 hover:scale-105 hover:shadow-[0_0_15px_rgba(34,197,94,0.3)] cursor-default">
+        <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-green-500/10 border border-green-500/20 shadow-sm backdrop-blur-md transition-all duration-300 hover:bg-green-500/20">
             <div class="relative flex h-3 w-3">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
                 <span class="relative inline-flex rounded-full h-3 w-3 bg-green-500 shadow-[0_0_8px_rgba(34,197,94,1)]"></span>
@@ -120,37 +149,51 @@
         </div>
     </div>
 
+    <!-- ANA İÇERİK -->
     <main class="w-full max-w-3xl space-y-10 py-10">
+        <!-- Başlık -->
         <div class="text-center space-y-4 px-2" data-aos="zoom-in" data-aos-duration="1200">
-            <h1 class="text-6xl md:text-9xl font-extrabold tracking-tighter break-words bg-clip-text text-transparent bg-gradient-to-br from-indigo-400 via-purple-500 to-pink-500 drop-shadow-[0_0_30px_rgba(139,92,246,0.5)] transition-transform duration-500 cursor-default">DELICRAFT</h1>
-            <p class="text-purple-300/80 font-medium tracking-widest uppercase text-xs sm:text-sm drop-shadow-md">Şimdiden iyi oyunlar dileriz..</p>
+            <h1 class="text-6xl md:text-9xl font-extrabold tracking-tighter break-words bg-clip-text text-transparent bg-gradient-to-br from-indigo-400 via-purple-500 to-pink-500">
+                DELICRAFT
+            </h1>
+            <p class="text-purple-300/80 font-medium tracking-widest uppercase text-xs sm:text-sm">Şimdiden iyi oyunlar dileriz..</p>
         </div>
 
+        <!-- Açılır Kutular Bölümü -->
         <div class="space-y-4">
-            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-md transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_25px_rgba(139,92,246,0.2)] hover:bg-white/10" data-aos="fade-up" data-aos-duration="800">
-                <button onclick="toggleBox('hakkimizda-box', this)" class="w-full p-6 text-left font-bold flex justify-between items-center outline-none group">
-                    Hakkımızda <span class="text-indigo-400 transition-transform duration-300 ease-in-out inline-block origin-center group-hover:scale-110">▼</span>
+            <!-- Hakkımızda Kutusu -->
+            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-md transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_25px_rgba(139,92,246,0.2)]">
+                <button onclick="toggleBox('hakkimizda-box', this)" class="w-full p-6 text-left font-bold flex justify-between items-center outline-none group hover:bg-white/5 transition">
+                    Hakkımızda 
+                    <span class="text-indigo-400 transition-transform duration-300 ease-in-out inline-block origin-center group-hover:scale-110">▼</span>
                 </button>
-                <div id="hakkimizda-box" class="hidden p-6 pt-0 text-purple-400 font-medium text-sm leading-loose drop-shadow-[0_0_10px_rgba(168,85,247,0.6)]">
-                    DeliCraft Güncel olarak survival, takas , ekonomi ve raid gibi kapsamlara sahip gelişme sürecinde olan bir minecraft topluluk sunucusudur 2026 yılında üç arkadaşın birbirini motive ederek yaptığı bir çalışmadır.
+                <div id="hakkimizda-box" class="hidden p-6 pt-0 text-purple-400 font-medium text-sm leading-loose border-t border-white/5">
+                    DeliCraft, 2026 yılında kurulmuş, survival, takas, ekonomi ve raid gibi kapsamlara sahip, gelişme sürecinde olan bir Minecraft topluluk sunucusudur. Üç arkadaşın ortak hayali olarak başlayan bu proje, oyuncular için eğlenceli ve rekabetçi bir ortam sağlamayı amaçlamaktadır.
                 </div>
             </div>
 
-            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-md transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_25px_rgba(139,92,246,0.2)] hover:bg-white/10" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
-                <button onclick="toggleBox('kurucular-box', this)" class="w-full p-6 text-left font-bold flex justify-between items-center outline-none group">
-                    Kurucular <span class="text-indigo-400 transition-transform duration-300 ease-in-out inline-block origin-center group-hover:scale-110">▼</span>
+            <!-- Kurucular Kutusu -->
+            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-md transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_25px_rgba(139,92,246,0.2)]">
+                <button onclick="toggleBox('kurucular-box', this)" class="w-full p-6 text-left font-bold flex justify-between items-center outline-none group hover:bg-white/5 transition">
+                    Kurucular 
+                    <span class="text-indigo-400 transition-transform duration-300 ease-in-out inline-block origin-center group-hover:scale-110">▼</span>
                 </button>
-                <div id="kurucular-box" class="hidden p-6 pt-0">
+                <div id="kurucular-box" class="hidden p-6 pt-6 border-t border-white/5">
                     <div class="flex flex-col md:flex-row justify-center items-center gap-6 mt-2">
-                        <div class="text-center bg-pink-500/10 border border-pink-500/40 p-5 rounded-xl w-full md:w-1/3 flex flex-col justify-center shadow-[0_0_25px_rgba(244,63,94,0.35)] animate-pulse hover:scale-105 transition-transform duration-300">
+                        <!-- EFES -->
+                        <div class="text-center bg-pink-500/10 border border-pink-500/40 p-5 rounded-xl w-full md:w-1/3 flex flex-col justify-center shadow-[0_0_25px_rgba(244,63,94,0.35)]">
                             <span class="font-extrabold text-pink-500 text-2xl mb-2 drop-shadow-[0_0_12px_rgba(244,63,94,1)]">EFES</span>
                             <span class="text-xs text-pink-300/80 uppercase">Sorumlu</span>
                         </div>
-                        <div class="text-center bg-amber-500/10 border border-amber-400/40 p-5 rounded-xl w-full md:w-1/3 flex flex-col justify-center shadow-[0_0_25px_rgba(245,158,11,0.2)] animate-pulse hover:scale-105 transition-transform duration-300">
+                        
+                        <!-- JAHOCK -->
+                        <div class="text-center bg-amber-500/10 border border-amber-400/40 p-5 rounded-xl w-full md:w-1/3 flex flex-col justify-center shadow-[0_0_25px_rgba(245,158,11,0.2)]">
                             <span class="font-extrabold text-amber-400 text-2xl mb-2 drop-shadow-[0_0_10px_rgba(251,191,36,0.8)]">JAHOCK</span>
                             <span class="text-xs text-amber-200/80 uppercase">Baş Sorumlu</span>
                         </div>
-                        <div class="text-center bg-blue-500/10 border border-blue-500/40 p-5 rounded-xl w-full md:w-1/3 flex flex-col justify-center shadow-[0_0_20px_rgba(59,130,246,0.35)] animate-pulse hover:scale-105 transition-transform duration-300">
+                        
+                        <!-- MALANDİNA -->
+                        <div class="text-center bg-blue-500/10 border border-blue-500/40 p-5 rounded-xl w-full md:w-1/3 flex flex-col justify-center shadow-[0_0_20px_rgba(59,130,246,0.35)]">
                             <span class="font-extrabold text-blue-400 text-2xl mb-2 drop-shadow-[0_0_12px_rgba(59,130,246,1)]">MALANDİNA</span>
                             <span class="text-xs text-blue-200/80 uppercase">Sorumlu</span>
                         </div>
@@ -158,25 +201,28 @@
                 </div>
             </div>
 
-            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-md transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_25px_rgba(139,92,246,0.2)] hover:bg-white/10" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
-                <button onclick="toggleBox('sosyal-box', this)" class="w-full p-6 text-left font-bold flex justify-between items-center outline-none group">
-                    Sosyal Medya <span class="text-indigo-400 transition-transform duration-300 ease-in-out inline-block origin-center group-hover:scale-110">▼</span>
+            <!-- Sosyal Medya Kutusu -->
+            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden backdrop-blur-md transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_25px_rgba(139,92,246,0.2)]">
+                <button onclick="toggleBox('sosyal-box', this)" class="w-full p-6 text-left font-bold flex justify-between items-center outline-none group hover:bg-white/5 transition">
+                    Sosyal Medya 
+                    <span class="text-indigo-400 transition-transform duration-300 ease-in-out inline-block origin-center group-hover:scale-110">▼</span>
                 </button>
                 <div id="sosyal-box" class="hidden p-6 pt-6 border-t border-white/5 bg-black/20 text-center space-y-6">
-                    <p class="text-purple-400 font-medium text-sm drop-shadow-[0_0_10px_rgba(168,85,247,0.6)]">Sunucu hakkındaki en güncel duyuruları ve eğlenceli içerikleri öğrenmek için bizi takip edebilirsiniz.</p>
+                    <p class="text-purple-400 font-medium text-sm">Sunucu hakkındaki en güncel duyuruları ve eğlenceli içerikleri öğrenmek için sosyal medya hesaplarımızı takip edin!</p>
                     <div class="flex flex-row justify-center items-center gap-8 pb-2">
-                        <a href="https://www.instagram.com/delicraftmc?igsh=M2J6ZWcwc2I3dzcx&utm_source=qr" target="_blank" class="text-pink-500 hover:text-pink-400 transition-all duration-300 drop-shadow-[0_0_12px_rgba(236,72,153,0.6)] hover:scale-125">
+                        <a href="https://www.instagram.com/delicraftmc?igsh=M2J6ZWcwc2I3dzcx&utm_source=qr" target="_blank" class="text-pink-500 hover:text-pink-400 transition-all duration-300 transform hover:scale-110">
                             <i class="fa-brands fa-instagram text-4xl"></i>
                         </a>
-                        <a href="https://www.tiktok.com/@delicraftmc" target="_blank" class="text-white hover:text-zinc-300 transition-all duration-300 drop-shadow-[0_0_12px_rgba(255,255,255,0.6)] hover:scale-125">
+                        <a href="https://www.tiktok.com/@delicraftmc" target="_blank" class="text-white hover:text-zinc-300 transition-all duration-300 transform hover:scale-110">
                             <i class="fa-brands fa-tiktok text-4xl"></i>
                         </a>
                     </div>
                 </div>
             </div>
             
-            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden mt-6 shadow-[0_0_15px_rgba(74,222,128,0.15)] backdrop-blur-md transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(74,222,128,0.3)] hover:bg-white/10" data-aos="fade-up" data-aos-duration="800" data-aos-delay="300">
-                <button onclick="toggleBox('ip-box', this)" class="w-full p-6 text-left flex justify-between items-center outline-none group">
+            <!-- DeliCraft Launcher Kutusu -->
+            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden mt-6 shadow-[0_0_15px_rgba(74,222,128,0.15)] backdrop-blur-md transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_25px_rgba(139,92,246,0.2)]">
+                <button onclick="toggleBox('ip-box', this)" class="w-full p-6 text-left flex justify-between items-center outline-none group hover:bg-white/5 transition">
                     <span class="font-extrabold text-lime-400 animate-pulse drop-shadow-[0_0_10px_rgba(163,230,53,0.8)] tracking-tight">DeliCraft Launcher</span>
                     <span class="text-lime-400 transition-transform duration-300 ease-in-out inline-block origin-center group-hover:scale-110">▼</span>
                 </button>
@@ -184,15 +230,14 @@
                     <a href="https://drive.google.com/uc?export=download&id=1EWjHLq1_6ZYJo9uuwF2ZDSsDmSgeA56h" class="download-button group">
                         <span class="shine"></span>
                         <span class="download-icon"><i class="fa-solid fa-download"></i></span>
-                        <span class="relative">
-                          DELICRAFT CLIENT İNDİR
-                        </span>
+                        <span class="relative">DELICRAFT CLIENT İNDİR</span>
                     </a>
                 </div>
             </div>
 
-            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden mt-6 shadow-[0_0_15px_rgba(139,92,246,0.15)] backdrop-blur-md transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_30px_rgba(139,92,246,0.3)] hover:bg-white/10" data-aos="fade-up" data-aos-duration="800" data-aos-delay="400">
-                <button onclick="toggleBox('core-box', this)" class="w-full p-6 text-left flex justify-between items-center outline-none group">
+            <!-- DLI Core Kutusu -->
+            <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden mt-6 shadow-[0_0_15px_rgba(139,92,246,0.15)] backdrop-blur-md transition-all duration-500 hover:scale-[1.02] hover:shadow-[0_0_25px_rgba(139,92,246,0.2)]">
+                <button onclick="toggleBox('core-box', this)" class="w-full p-6 text-left flex justify-between items-center outline-none group hover:bg-white/5 transition">
                     <span class="font-extrabold text-indigo-400 animate-pulse drop-shadow-[0_0_10px_rgba(168,85,247,0.8)] tracking-tight">DLI Core</span>
                     <span class="text-indigo-400 transition-transform duration-300 ease-in-out inline-block origin-center group-hover:scale-110">▼</span>
                 </button>
@@ -200,24 +245,28 @@
                     <a href="#" class="download-button group !border-indigo-500/50 !bg-gradient-to-br !from-indigo-900 !to-indigo-950">
                         <span class="shine"></span>
                         <span class="download-icon !bg-indigo-500/20 !text-indigo-400"><i class="fa-solid fa-clock"></i></span>
-                        <span class="relative">
-                          ÇOK YAKINDA SİZLERLE
-                        </span>
+                        <span class="relative">ÇOK YAKINDA SİZLERLE</span>
                     </a>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="w-full text-center py-8 text-gray-500 text-xs mt-auto">
+    <!-- FOOTER (ALT KISIM) -->
+    <footer class="w-full text-center py-8 text-gray-500 text-xs mt-auto border-t border-white/10">
         <p>© 2026 DeliCraft. Tüm hakları JAHOCK'a aittir.</p>
         <p class="mt-1">Bu web sitesi ve tüm içerikler telif hakkı ile korunmaktadır.</p>
     </footer>
 
+    <!-- JavaScript Kütüphaneleri -->
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
     <script>
+        // AOS (Animate On Scroll) başlat
         AOS.init({ once: true, offset: 30 });
+
+        // Parçacık efekti ayarları
         particlesJS("particles-js", {
             "particles": {
                 "number": { "value": 50, "density": { "enable": true, "value_area": 800 } },
@@ -235,11 +284,15 @@
             },
             "retina_detect": true
         });
+
+        // Kutu Aç/Kapat Fonksiyonu
         function toggleBox(boxId, btnElement) {
             document.getElementById(boxId).classList.toggle('hidden');
             const arrow = btnElement.querySelector('span:last-child');
             arrow.classList.toggle('-rotate-90');
         }
+
+        // Discord Durumu Çek
         async function fetchDiscordStatus() {
             const guildId = '1494742841627508777';
             const display = document.getElementById('discord-member-count');
@@ -252,6 +305,8 @@
                 display.innerText = 'Aktiflik bilgisi kapalı';
             }
         }
+
+        // Discord durumunu başlangıçta ve her saniye çek
         fetchDiscordStatus();
         setInterval(fetchDiscordStatus, 1000);
     </script>
