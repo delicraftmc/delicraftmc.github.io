@@ -170,6 +170,52 @@
         .overlay.active {
             display: block;
         }
+
+        /* Discord Button */
+        .discord-login-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, #5865F2 0%, #4752C4 100%);
+            border: 1px solid rgba(88, 101, 242, 0.6);
+            color: white;
+            border-radius: 12px;
+            font-weight: bold;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .discord-login-btn:hover {
+            background: linear-gradient(135deg, #6D77F3 0%, #5562D4 100%);
+            box-shadow: 0 0 20px rgba(88, 101, 242, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: rgba(88, 101, 242, 0.15);
+            border: 1px solid rgba(88, 101, 242, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: rgba(88, 101, 242, 0.25);
+        }
+
+        .user-profile img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+        }
     </style>
 </head>
 
@@ -224,9 +270,19 @@
             </a>
         </nav>
 
-        <a href="#" class="menu-item mt-auto text-indigo-400 border-t border-white/10 pt-4">
-            <i class="fa-solid fa-user"></i> Giriş Yap
-        </a>
+        <div id="menu-auth" class="mt-auto border-t border-white/10 pt-4 space-y-2">
+            <a id="menu-login" href="#" onclick="loginWithDiscord(event)" class="menu-item text-indigo-400">
+                <i class="fa-solid fa-user"></i> Discord ile Giriş
+            </a>
+            <div id="menu-profile" class="hidden">
+                <div class="menu-item text-green-400 mb-2">
+                    <i class="fa-solid fa-check-circle"></i> Giriş Yapıldı
+                </div>
+                <button onclick="logoutUser()" class="w-full menu-item bg-red-500/20 text-red-400 hover:bg-red-500/30">
+                    <i class="fa-solid fa-sign-out-alt"></i> Çıkış Yap
+                </button>
+            </div>
+        </div>
     </div>
 
     <!-- BAŞLIK (HEADER) -->
@@ -238,7 +294,26 @@
             <img src="logo.png" alt="DeliCraft Logo" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
             <span class="text-xl sm:text-2xl font-extrabold tracking-tighter drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">DELICRAFT</span>
         </a>
-        <div class="w-10"></div>
+        <div id="header-auth" class="w-10 sm:w-auto">
+            <a id="header-login" href="#" onclick="loginWithDiscord(event)" class="discord-login-btn">
+                <i class="fa-brands fa-discord"></i> <span class="hidden sm:inline">Discord ile Giriş</span><span class="sm:hidden">Giriş</span>
+            </a>
+            <div id="header-profile" class="hidden">
+                <div class="user-profile" onclick="toggleProfileMenu()">
+                    <img id="profile-avatar" src="" alt="Avatar">
+                    <span id="profile-username" class="hidden sm:inline text-sm font-bold"></span>
+                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                </div>
+                <div id="profile-menu" class="hidden absolute top-16 right-4 sm:right-8 glass rounded-xl p-2 min-w-[150px]">
+                    <a href="yonetim.html" class="block px-4 py-2 hover:bg-white/10 rounded-lg transition text-sm">
+                        <i class="fa-solid fa-cog"></i> Panel
+                    </a>
+                    <button onclick="logoutUser()" class="w-full text-left px-4 py-2 hover:bg-red-500/20 rounded-lg transition text-sm text-red-400">
+                        <i class="fa-solid fa-sign-out-alt"></i> Çıkış Yap
+                    </button>
+                </div>
+            </div>
+        </div>
     </header>
 
     <!-- DISCORD VE AKTİFLİK BÖLÜMÜ -->
@@ -425,6 +500,11 @@
             "retina_detect": true
         });
 
+        // Discord OAuth Ayarları
+        const CLIENT_ID = "1524146338403713085";
+        const REDIRECT_URI = "https://delicraftmc.github.io/girisyap.html";
+        const SCOPES = "identify email guilds";
+
         // Sidebar Toggle Fonksiyonu
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('active');
@@ -438,6 +518,68 @@
                 document.getElementById('overlay').classList.remove('active');
             }
         });
+
+        // Discord ile Giriş Yap Fonksiyonu
+        function loginWithDiscord(event) {
+            event.preventDefault();
+            const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${SCOPES}`;
+            window.location.href = authUrl;
+        }
+
+        // Sayfa yüklendikten sonra kullanıcı bilgisini kontrol et
+        window.addEventListener('load', () => {
+            checkUserLogin();
+        });
+
+        // Kullanıcı giriş durumunu kontrol et
+        function checkUserLogin() {
+            const userData = localStorage.getItem('delicraft_user');
+            if (userData) {
+                const user = JSON.parse(userData);
+                updateUIWithUser(user);
+            }
+        }
+
+        // UI'yi kullanıcı bilgileriyle güncelle
+        function updateUIWithUser(user) {
+            // Header
+            document.getElementById('header-login').parentElement.style.display = 'none';
+            document.getElementById('header-profile').style.display = 'block';
+            document.getElementById('profile-avatar').src = user.avatar_url;
+            document.getElementById('profile-username').textContent = user.username;
+
+            // Sidebar
+            document.getElementById('menu-login').style.display = 'none';
+            document.getElementById('menu-profile').style.display = 'block';
+        }
+
+        // Profil menüsü toggle
+        function toggleProfileMenu() {
+            document.getElementById('profile-menu').classList.toggle('hidden');
+        }
+
+        // Dış alan tıklaması
+        document.addEventListener('click', (e) => {
+            const profileMenu = document.getElementById('profile-menu');
+            const userProfile = document.querySelector('.user-profile');
+            if (profileMenu && !profileMenu.parentElement.contains(e.target)) {
+                profileMenu.classList.add('hidden');
+            }
+        });
+
+        // Çıkış Yap Fonksiyonu
+        function logoutUser() {
+            localStorage.removeItem('delicraft_user');
+            
+            // UI'yi sıfırla
+            document.getElementById('header-login').parentElement.style.display = 'block';
+            document.getElementById('header-profile').style.display = 'none';
+            document.getElementById('menu-login').style.display = 'block';
+            document.getElementById('menu-profile').style.display = 'none';
+            
+            // Menüyü kapat
+            toggleMenu();
+        }
 
         // Discord Durumu Çek
         async function fetchDiscordStatus() {
