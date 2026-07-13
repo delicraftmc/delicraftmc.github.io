@@ -10,6 +10,11 @@
         body { font-family: 'Montserrat', sans-serif; background: #09090b; color: white; }
         .glow-blob { position: fixed; width: 500px; height: 500px; background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%); filter: blur(60px); z-index: -1; top: -100px; left: -100px; }
         .glow-blob-2 { position: fixed; width: 400px; height: 400px; background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%); filter: blur(60px); z-index: -1; bottom: -100px; right: -100px; }
+        @media (max-width: 480px) {
+            .login-card { padding: 1.5rem !important; }
+            .login-card h2 { font-size: 1.5rem !important; }
+            .login-card input { padding: 0.65rem 0.75rem !important; font-size: 0.9rem; }
+        }
     </style>
 </head>
 <body class="min-h-screen flex items-center justify-center p-4 relative overflow-hidden">
@@ -21,7 +26,7 @@
         <p class="text-zinc-400 text-sm">Discord ile giriş yapılıyor...</p>
     </div>
 
-    <main id="loginFormContainer" class="hidden w-full max-w-md bg-white/5 p-8 rounded-3xl border border-white/10 shadow-2xl relative z-10 backdrop-blur-sm">
+    <main id="loginFormContainer" class="login-card hidden w-full max-w-md bg-white/5 p-8 rounded-3xl border border-white/10 shadow-2xl relative z-10 backdrop-blur-sm">
         <div class="flex flex-col items-center mb-6">
             <img src="logo.png" alt="Logo" class="w-12 h-12 rounded-xl mb-3 shadow-lg">
             <h2 class="text-3xl font-extrabold tracking-tight text-center">Giriş Yap</h2>

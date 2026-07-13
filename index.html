@@ -20,6 +20,11 @@
             width: 100%;
         }
 
+        /* Mobile first: touch targets, scroll */
+        .sidebar {
+            -webkit-overflow-scrolling: touch;
+        }
+
         /* Sidebar Menü */
         .sidebar {
             transform: translateX(-100%);
@@ -37,7 +42,7 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            padding: 12px 20px;
+            padding: 14px 20px;
             transition: all 0.3s ease;
             border-radius: 12px;
             text-decoration: none;
@@ -245,6 +250,35 @@
             width: 32px;
             height: 32px;
             border-radius: 50%;
+        }
+
+        /* ===== MOBILE OPTIMIZATIONS ===== */
+        @media (max-width: 639px) {
+            .hero-title {
+                font-size: 2.8rem !important;
+            }
+            @media (max-width: 380px) {
+                .hero-title {
+                    font-size: 2.2rem !important;
+                }
+            }
+            .profile-dropdown-mobile {
+                right: 0;
+                left: auto;
+                min-width: 160px;
+            }
+            .sidebar {
+                width: 75vw;
+                max-width: 280px;
+            }
+            .discord-pill span {
+                font-size: 0.75rem;
+            }
+        }
+        @media (max-width: 360px) {
+            .header-discord-text {
+                display: none !important;
+            }
         }
 
         /* ===== DESKTOP-ONLY ENHANCEMENTS ===== */
@@ -487,7 +521,7 @@
                     <span id="profile-username" class="hidden sm:inline text-sm font-bold"></span>
                     <i class="fa-solid fa-chevron-down text-xs"></i>
                 </div>
-                <div id="profile-menu" class="hidden absolute top-14 right-0 sm:right-0 glass rounded-xl p-2 min-w-[150px] z-50">
+                <div id="profile-menu" class="hidden absolute top-14 right-0 sm:right-0 profile-dropdown-mobile glass rounded-xl p-2 min-w-[150px] z-50">
                     <a href="yonetim.html" class="block px-4 py-2 hover:bg-white/10 rounded-lg transition text-sm">
                         <i class="fa-solid fa-cog"></i> Panel
                     </a>
@@ -499,7 +533,7 @@
         </div>
     </header>
 
-    <div class="w-full max-w-5xl flex flex-col sm:flex-row items-center justify-center py-2 space-y-3 sm:space-y-0 sm:space-x-4 px-4" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+    <div class="w-full max-w-5xl flex flex-col sm:flex-row items-center justify-center py-2 space-y-3 sm:space-y-0 sm:space-x-4 px-4 discord-pill" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
         <a href="https://discord.gg/psMWPVfbwm" target="_blank" class="w-full sm:w-auto flex items-center justify-center gap-3 px-5 py-2.5 rounded-full glass hover:bg-indigo-600/20 transition-all">
             <div class="relative flex h-3 w-3">
                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
@@ -650,23 +684,25 @@
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     
     <script>
-        // AOS (Animate On Scroll) başlat
-        AOS.init({ once: true, offset: 30 });
+        // AOS (Animate On Scroll) başlat - mobilde animasyonları kapat
+        const isMobile = window.innerWidth < 640;
+        AOS.init({ once: true, offset: 30, disable: isMobile });
 
-        // Parçacık efekti ayarları (Mobilde performans için optimize edilebilir ama dokunmuyoruz)
+        // Parçacık efekti ayarları - mobilde daha az parçacık
+        const isMobileParticles = window.innerWidth < 640;
         particlesJS("particles-js", {
             "particles": {
-                "number": { "value": 50, "density": { "enable": true, "value_area": 800 } },
+                "number": { "value": isMobileParticles ? 15 : 50, "density": { "enable": true, "value_area": 800 } },
                 "color": { "value": "#8b5cf6" },
                 "shape": { "type": "circle" },
-                "opacity": { "value": 0.5, "random": true, "anim": { "enable": true, "speed": 1, "opacity_min": 0.1, "sync": false } },
-                "size": { "value": 3, "random": true, "anim": { "enable": true, "speed": 2, "size_min": 0.1, "sync": false } },
+                "opacity": { "value": isMobileParticles ? 0.3 : 0.5, "random": true, "anim": { "enable": !isMobileParticles, "speed": 1, "opacity_min": 0.1, "sync": false } },
+                "size": { "value": isMobileParticles ? 2 : 3, "random": true, "anim": { "enable": !isMobileParticles, "speed": 2, "size_min": 0.1, "sync": false } },
                 "line_linked": { "enable": false },
-                "move": { "enable": true, "speed": 0.6, "direction": "top", "random": true, "straight": false, "out_mode": "out", "bounce": false }
+                "move": { "enable": true, "speed": isMobileParticles ? 0.3 : 0.6, "direction": "top", "random": true, "straight": false, "out_mode": "out", "bounce": false }
             },
             "interactivity": {
                 "detect_on": "canvas",
-                "events": { "onhover": { "enable": true, "mode": "bubble" }, "onclick": { "enable": false }, "resize": true },
+                "events": { "onhover": { "enable": !isMobileParticles, "mode": "bubble" }, "onclick": { "enable": false }, "resize": true },
                 "modes": { "bubble": { "distance": 200, "size": 6, "duration": 2, "opacity": 0.8, "speed": 3 } }
             },
             "retina_detect": true
