@@ -1,0 +1,7 @@
+[[mods]]
+modId = "delicraft"
+version = "${version}"
+displayName = "DeliCraft"
+description = "Premium Minecraft client experience"
+logoFile = "delicraft.png"
+authors = ["Delicraft Team"]

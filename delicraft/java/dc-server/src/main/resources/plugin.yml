@@ -1,0 +1,7 @@
+name: DeliCraft
+version: ${version}
+main: com.delicraft.server.DeliCraftPlugin
+api-version: '1.21'
+author: Delicraft Team
+description: Premium Minecraft server ecosystem
+website: https://delicraft.net

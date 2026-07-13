@@ -1,0 +1,38 @@
+[versions]
+java = "21"
+minecraft = "1.21.1"
+neoforge = "21.1.62"
+paper = "1.21.1-R0.1-SNAPSHOT"
+
+junit = "5.11.4"
+mockito = "5.14.2"
+archunit = "1.3.0"
+
+sqlite = "3.46.1"
+hikaricp = "6.2.1"
+flyway = "10.22.0"
+
+hocon = "1.4.2"
+
+slf4j = "2.0.16"
+logback = "1.5.15"
+
+spotless = "6.25.0"
+
+[libraries]
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter", version.ref = "junit" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher", version = "1.11.4" }
+mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockito" }
+archunit-junit5 = { module = "com.tngtech.archunit:archunit-junit5", version.ref = "archunit" }
+
+sqlite-jdbc = { module = "org.xerial:sqlite-jdbc", version.ref = "sqlite" }
+hikaricp = { module = "com.zaxxer:HikariCP", version.ref = "hikaricp" }
+flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
+
+hocon = { module = "com.typesafe:config", version.ref = "hocon" }
+
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+
+[plugins]
+spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
