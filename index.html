@@ -514,10 +514,25 @@
             "retina_detect": true
         });
 
-        // Discord OAuth Ayarları
+        // Discord OAuth Ayarları (PKCE)
         const CLIENT_ID = "1524146338403713085";
         const REDIRECT_URI = "https://delicraftmc.github.io/girisyap.html";
         const SCOPES = "identify email guilds";
+
+        function generateCodeVerifier() {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+            const array = new Uint8Array(64);
+            crypto.getRandomValues(array);
+            return Array.from(array, byte => chars[byte % chars.length]).join('');
+        }
+
+        async function sha256(plain) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(plain);
+            const hash = await crypto.subtle.digest('SHA-256', data);
+            return btoa(String.fromCharCode(...new Uint8Array(hash)))
+                .replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+        }
 
         // Sidebar Toggle Fonksiyonu
         function toggleMenu() {
@@ -533,15 +548,32 @@
             }
         });
 
-        // Discord ile Giriş Yap Fonksiyonu
-        function loginWithDiscord(event) {
+        // Discord ile Giriş Yap (PKCE)
+        async function loginWithDiscord(event) {
             event.preventDefault();
-            const authUrl = `https://discord.com/api/oauth2/authorize?client_id=${CLIENT_ID}&response_type=code&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=${SCOPES}`;
-            window.location.href = authUrl;
+            const codeVerifier = generateCodeVerifier();
+            const codeChallenge = await sha256(codeVerifier);
+            sessionStorage.setItem('dc_code_verifier', codeVerifier);
+            const params = new URLSearchParams({
+                client_id: CLIENT_ID,
+                response_type: 'code',
+                redirect_uri: REDIRECT_URI,
+                scope: SCOPES,
+                code_challenge_method: 'S256',
+                code_challenge: codeChallenge
+            });
+            window.location.href = `https://discord.com/api/oauth2/authorize?${params}`;
         }
 
-        // Sayfa yüklendikten sonra kullanıcı bilgisini kontrol et
+        // Sayfa yüklendikten sonra kullanıcı bilgisini kontrol et ve URL parametrelerini işle
         window.addEventListener('load', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.has('giris')) {
+                history.replaceState(null, '', window.location.pathname);
+            }
+            if (params.get('error') === 'discord_reddedildi') {
+                alert('Discord girişi reddedildi.');
+            }
             checkUserLogin();
         });
 

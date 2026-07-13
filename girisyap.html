@@ -16,7 +16,12 @@
     <div class="glow-blob"></div>
     <div class="glow-blob-2"></div>
 
-    <main class="w-full max-w-md bg-white/5 p-8 rounded-3xl border border-white/10 shadow-2xl relative z-10 backdrop-blur-sm">
+    <div id="loadingScreen" class="flex flex-col items-center gap-4">
+        <div class="w-10 h-10 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+        <p class="text-zinc-400 text-sm">Discord ile giriş yapılıyor...</p>
+    </div>
+
+    <main id="loginFormContainer" class="hidden w-full max-w-md bg-white/5 p-8 rounded-3xl border border-white/10 shadow-2xl relative z-10 backdrop-blur-sm">
         <div class="flex flex-col items-center mb-6">
             <img src="logo.png" alt="Logo" class="w-12 h-12 rounded-xl mb-3 shadow-lg">
             <h2 class="text-3xl font-extrabold tracking-tight text-center">Giriş Yap</h2>
@@ -32,7 +37,7 @@
             <div>
                 <input type="password" id="password" placeholder="Şifre" class="w-full bg-white/5 border border-white/10 p-3 rounded-xl outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition" required>
             </div>
-            
+
             <button type="submit" id="submitBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 py-3 rounded-xl font-bold shadow-[0_0_15px_rgba(79,70,229,0.3)] transition duration-200">Giriş Yap</button>
         </form>
 
@@ -40,6 +45,80 @@
             Hesabın yok mu? <a href="kayitol.html" class="text-indigo-400 hover:underline font-semibold">Kayıt Ol</a>
         </div>
     </main>
+
+    <script>
+        // Discord OAuth callback (PKCE)
+        const urlParams = new URLSearchParams(window.location.search);
+        const code = urlParams.get('code');
+        const error = urlParams.get('error');
+
+        if (error) {
+            sessionStorage.removeItem('dc_code_verifier');
+            window.location.href = 'index.html?error=discord_reddedildi';
+        } else if (code) {
+            (async () => {
+                try {
+                    const codeVerifier = sessionStorage.getItem('dc_code_verifier');
+                    sessionStorage.removeItem('dc_code_verifier');
+
+                    if (!codeVerifier) {
+                        window.location.href = 'index.html?error=dogrulama_kodu_bulunamadi';
+                        return;
+                    }
+
+                    const tokenRes = await fetch('https://discord.com/api/oauth2/token', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams({
+                            client_id: '1524146338403713085',
+                            grant_type: 'authorization_code',
+                            code: code,
+                            redirect_uri: 'https://delicraftmc.github.io/girisyap.html',
+                            code_verifier: codeVerifier
+                        })
+                    });
+
+                    if (!tokenRes.ok) {
+                        window.location.href = 'index.html?error=token_alınamadı';
+                        return;
+                    }
+
+                    const tokenData = await tokenRes.json();
+                    const accessToken = tokenData.access_token;
+
+                    const userRes = await fetch('https://discord.com/api/users/@me', {
+                        headers: { Authorization: `Bearer ${accessToken}` }
+                    });
+
+                    if (!userRes.ok) {
+                        window.location.href = 'index.html?error=kullanici_bilgisi_alınamadı';
+                        return;
+                    }
+
+                    const user = await userRes.json();
+                    const avatar_url = user.avatar
+                        ? `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`
+                        : `https://cdn.discordapp.com/embed/avatars/${user.discriminator % 5}.png`;
+
+                    const userData = {
+                        id: user.id,
+                        username: user.global_name || user.username,
+                        avatar_url: avatar_url,
+                        email: user.email || ''
+                    };
+
+                    localStorage.setItem('delicraft_user', JSON.stringify(userData));
+                    window.location.href = 'index.html?giris=basarili';
+                } catch (err) {
+                    window.location.href = 'index.html?error=beklenmeyen_hata';
+                }
+            })();
+        } else {
+            // Direct visit: show Firebase login form
+            document.getElementById('loadingScreen').style.display = 'none';
+            document.getElementById('loginFormContainer').classList.remove('hidden');
+        }
+    </script>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
@@ -63,11 +142,10 @@
         const msgBox = document.getElementById('msgBox');
         const submitBtn = document.getElementById('submitBtn');
 
-        // Bildirim gösterme fonksiyonu
         function showMessage(text, type) {
             msgBox.textContent = text;
             msgBox.classList.remove('hidden', 'bg-emerald-500/10', 'border-emerald-500/30', 'text-emerald-400', 'bg-red-500/10', 'border-red-500/30', 'text-red-400');
-            
+
             if (type === 'success') {
                 msgBox.classList.add('bg-emerald-500/10', 'border-emerald-500/30', 'text-emerald-400');
             } else {
@@ -79,8 +157,7 @@
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            
-            // Butonu yükleniyor durumuna getiriyoruz
+
             submitBtn.disabled = true;
             submitBtn.textContent = "Giriş Yapılıyor...";
 
@@ -99,8 +176,7 @@
                 const username = userDoc.exists() ? userDoc.data().username : "Oyuncu";
 
                 showMessage(`Giriş başarılı, ${username}! Panele yönlendiriliyorsunuz...`, "success");
-                
-                // 🚀 Oyuncuyu 1.5 saniye sonra skin paneline (yonetim.html) uçuruyoruz
+
                 setTimeout(() => {
                     window.location.href = "yonetim.html";
                 }, 1500);
@@ -108,10 +184,9 @@
             } catch (error) {
                 submitBtn.disabled = false;
                 submitBtn.textContent = "Giriş Yap";
-                
-                // 🚀 Firebase İngilizce hatalarını temiz Türkçe mesajlara çevirme kısmı
+
                 let turkceHata = "Giriş yapılamadı. Lütfen bilgilerinizi kontrol edin.";
-                
+
                 if (error.code === "auth/invalid-credential" || error.code === "auth/wrong-password" || error.code === "auth/user-not-found") {
                     turkceHata = "E-posta adresi veya şifre hatalı!";
                 } else if (error.code === "auth/invalid-email") {
@@ -119,7 +194,7 @@
                 } else if (error.code === "auth/too-many-requests") {
                     turkceHata = "Çok fazla hatalı deneme yaptınız. Lütfen daha sonra tekrar deneyin.";
                 }
-                
+
                 showMessage(turkceHata, "error");
             }
         });
