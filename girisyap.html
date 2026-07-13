@@ -108,6 +108,7 @@
                     };
 
                     localStorage.setItem('delicraft_user', JSON.stringify(userData));
+                    localStorage.setItem('delicraft_token', accessToken);
                     window.location.href = 'index.html?giris=basarili';
                 } catch (err) {
                     window.location.href = 'index.html?error=beklenmeyen_hata';

@@ -442,7 +442,8 @@
                     <h2 class="text-xl sm:text-2xl font-extrabold text-lime-400">DeliCraft Launcher</h2>
                 </div>
                 <p class="text-sm text-gray-400 px-2">Sunucuya hızlı ve kolay erişim için özel launcheri indir</p>
-                <a href="https://drive.google.com/uc?export=download&id=1EWjHLq1_6ZYJo9uuwF2ZDSsDmSgeA56h" class="download-button group inline-flex">
+                <p id="dl-status" class="text-xs text-zinc-500 min-h-[20px]"></p>
+                <a id="dl-button" href="https://drive.google.com/uc?export=download&id=1EWjHLq1_6ZYJo9uuwF2ZDSsDmSgeA56h" class="download-button group inline-flex pointer-events-none opacity-50">
                     <span class="shine"></span>
                     <span class="download-icon"><i class="fa-solid fa-download"></i></span>
                     <span class="relative">LAUNCHER İNDİR</span>
@@ -564,7 +565,8 @@
             window.location.href = authUrl;
         }
 
-        // Sayfa yüklendikten sonra kullanıcı bilgisini kontrol et ve URL parametrelerini işle
+        const GUILD_ID = '1494742841627508777';
+
         window.addEventListener('load', () => {
             const params = new URLSearchParams(window.location.search);
             if (params.has('giris')) {
@@ -576,34 +578,62 @@
             checkUserLogin();
         });
 
-        // Kullanıcı giriş durumunu kontrol et
         function checkUserLogin() {
             const userData = localStorage.getItem('delicraft_user');
-            if (userData) {
+            const token = localStorage.getItem('delicraft_token');
+            if (userData && token) {
                 const user = JSON.parse(userData);
                 updateUIWithUser(user);
+                checkGuildMembership(token);
+            } else {
+                updateDownloadButton(false);
             }
         }
 
-        // UI'yi kullanıcı bilgileriyle güncelle
         function updateUIWithUser(user) {
-            // Header
             document.getElementById('header-login').style.display = 'none';
             document.getElementById('header-profile').style.display = 'block';
             document.getElementById('profile-avatar').src = user.avatar_url;
             document.getElementById('profile-username').textContent = user.username;
-
-            // Sidebar
             document.getElementById('menu-login').style.display = 'none';
             document.getElementById('menu-profile').style.display = 'block';
         }
 
-        // Profil menüsü toggle
+        async function checkGuildMembership(token) {
+            const status = document.getElementById('dl-status');
+            status.textContent = 'Sunucu üyeliği kontrol ediliyor...';
+            try {
+                const res = await fetch('https://discord.com/api/users/@me/guilds', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (!res.ok) {
+                    updateDownloadButton(false, 'Oturum süresi doldu, tekrar giriş yap.');
+                    return;
+                }
+                const guilds = await res.json();
+                const inGuild = guilds.some(g => g.id === GUILD_ID);
+                updateDownloadButton(inGuild, inGuild ? '' : 'Discord sunucumuza katıl ve launcheri indir.');
+            } catch {
+                updateDownloadButton(false, 'Bağlantı hatası, tekrar dene.');
+            }
+        }
+
+        function updateDownloadButton(enabled, msg) {
+            const btn = document.getElementById('dl-button');
+            const status = document.getElementById('dl-status');
+            if (enabled) {
+                btn.classList.remove('pointer-events-none', 'opacity-50');
+                status.textContent = '';
+            } else {
+                btn.classList.add('pointer-events-none', 'opacity-50');
+                status.textContent = msg || 'Önce Discord ile giriş yap ve sunucumuza katıl.';
+            }
+        }
+
         function toggleProfileMenu() {
             document.getElementById('profile-menu').classList.toggle('hidden');
         }
 
-        // Dış alan tıklaması
         document.addEventListener('click', (e) => {
             const profileMenu = document.getElementById('profile-menu');
             const userProfile = document.querySelector('.user-profile');
@@ -612,19 +642,16 @@
             }
         });
 
-        // Çıkış Yap Fonksiyonu
         function logoutUser() {
             localStorage.removeItem('delicraft_user');
-            
-            // UI'yi sıfırla
+            localStorage.removeItem('delicraft_token');
             document.getElementById('header-login').style.display = 'inline-flex';
             document.getElementById('header-profile').style.display = 'none';
             document.getElementById('menu-login').style.display = 'flex';
             document.getElementById('menu-profile').style.display = 'none';
-            
-            // Menüyü kapat
             document.getElementById('profile-menu').classList.add('hidden');
-            if(document.getElementById('sidebar').classList.contains('active')) toggleMenu();
+            if (document.getElementById('sidebar').classList.contains('active')) toggleMenu();
+            updateDownloadButton(false);
         }
 
         // Discord Durumu Çek
